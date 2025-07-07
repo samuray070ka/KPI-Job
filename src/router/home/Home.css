@@ -1083,6 +1083,7 @@
   position: relative;
   color: #333;
   transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap; /* bu qo'shilsa tugmalar matni qatorga bo'linmaydi */
 }
 
 .tab-btn .count {
@@ -1101,4 +1102,12 @@
 
 .tab-btn:hover {
   color: #e63946;
+}
+
+@media screen and (max-width:800px) {
+  .departments-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch;
+  }
 }
