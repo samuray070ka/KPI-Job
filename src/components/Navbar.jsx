@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import "./components.css"
 import logo from "../assets/image-removebg-preview.png"
 import { FaLinkedin } from "react-icons/fa";
@@ -7,21 +7,26 @@ import { FaYoutube } from "react-icons/fa6";
 import { HiMiniBars3 } from "react-icons/hi2";
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen)
+  }
   return (
     <div className='navbar'>
         <div className='container navbar_container'>
             <img className='navbar_logo' src={logo} alt="" />
             <h1 className='flex'> </h1>
-            <ul className='navbar_collaction'>
-                <a className='navbar_item link' href="#jobs">Jobs</a>
-                <a className='navbar_item link' href='#culture'>Culture</a>
-                <a className='navbar_item link' href='#perks'>Perks</a>
-                <li className='navbar_item navbar_icon'><FaLinkedin /></li>
-                <li className='navbar_item navbar_icon'><PiInstagramLogoFill /></li>
-                <li className='navbar_item navbar_icon'><FaYoutube /></li>
+            <ul className={`navbar_collaction ${isOpen ? 'open' : ''}`}>
+                <a className='navbar_item link'  onClick={() => setIsOpen(false)} href="#jobs">Jobs</a>
+                <a className='navbar_item link'  onClick={() => setIsOpen(false)} href='#culture'>Culture</a>
+                <a className='navbar_item link flex'  onClick={() => setIsOpen(false)} href='#perks'>Perks</a>
+                <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><FaLinkedin /></li>
+                <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><PiInstagramLogoFill /></li>
+                <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><FaYoutube /></li>
             </ul>
             <a href='https://kpi.com/' className='navbar_btn'>Company website</a>
-            <button className='navbar_bars'><HiMiniBars3 /></button>
+            <button className='navbar_bars' onClick={toggleMenu}><HiMiniBars3 /></button>
         </div>
     </div>
   )
