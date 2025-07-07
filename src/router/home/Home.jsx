@@ -169,7 +169,7 @@ function Home() {
             <br />
             <p>We have a horizontal system, a real one. At Holded you will be able to give your opinion, debate, disagree, suggest, propose... and, above all, learn. The best part is that you will shape great ideas hand in hand with your team.</p>
           </div>
-           <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/760237911?h=25f8830e62" width="640" height="360"></iframe>
+           <iframe className='first_video' title="vimeo-player"frameBorder={"0"} src="https://player.vimeo.com/video/760237911?h=25f8830e62" width="640" height="360"></iframe>
         </div>
       </div>
       <div id='culture' className="value">
@@ -211,7 +211,7 @@ function Home() {
       </div>
        <div className="learning second">
         <div className="container learning_container">
-          <iframe  className='second_video' title="vimeo-player" src="https://player.vimeo.com/video/760228363?h=ef125459cb" width="640" height="360"></iframe>
+          <iframe  className='second_video' title="vimeo-player"frameBorder={"0"} src="https://player.vimeo.com/video/760228363?h=ef125459cb" width="640" height="360"></iframe>
             <div className='learn_left'>
             <h1>Draw your career path</h1>
             <br />
@@ -273,7 +273,7 @@ function Home() {
             <br />
             <p>One of the best things about Holded is that the people who have been there since the beginning are still with us - and in more senior roles. The key? Communication and being clear about the objectives of each team. This way, the product is excellent and the customers are happy. At the end of the day, nothing compares to the satisfaction of a job well done.</p>
           </div>
-           <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/757891971?h=6c7efb5a7c" width="640" height="360"></iframe>
+           <iframe className='first_video' title="vimeo-player"frameBorder={"0"} src="https://player.vimeo.com/video/757891971?h=6c7efb5a7c" width="640" height="360"></iframe>
         </div>
       </div>
        <div className="business">
@@ -329,7 +329,7 @@ function Home() {
       </div>
        <div className="learning third fixed">
         <div className="container learning_container">
-             <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360"></iframe>
+             <iframe className='first_video' title="vimeo-player" frameBorder={"0"} src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360"></iframe>
           <div className='learn_left h1'>
             <h1>Barcelona, a city to call home.</h1>
             <br />
