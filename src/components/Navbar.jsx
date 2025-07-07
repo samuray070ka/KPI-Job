@@ -18,13 +18,13 @@ function Navbar() {
             <img className='navbar_logo' src={logo} alt="" />
             <h1 className='flex'> </h1>
             <ul className={`navbar_collaction ${isOpen ? 'open' : ''}`}>
-                <a className='navbar_item link'  onClick={() => setIsOpen(false)} href="#jobs">Jobs</a>
-                <a className='navbar_item link'  onClick={() => setIsOpen(false)} href='#culture'>Culture</a>
-                <a className='navbar_item link flex'  onClick={() => setIsOpen(false)} href='#perks'>Perks</a>
-                <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><FaLinkedin /></li>
-                <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><PiInstagramLogoFill /></li>
-                <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><FaYoutube /></li>
-              <a href='https://kpi.com/'  onClick={() => setIsOpen(false)} className='navbar_btn'>Company website</a>
+                <a className='navbar_item link one'  onClick={() => setIsOpen(false)} href="#jobs">Jobs</a>
+                <a className='navbar_item link two'  onClick={() => setIsOpen(false)} href='#culture'>Culture</a>
+                <a className='navbar_item link flex three'  onClick={() => setIsOpen(false)} href='#perks'>Perks</a>
+                <li className='navbar_item navbar_icon four'  onClick={() => setIsOpen(false)}><FaLinkedin /></li>
+                <li className='navbar_item navbar_icon five'  onClick={() => setIsOpen(false)}><PiInstagramLogoFill /></li>
+                <li className='navbar_item navbar_icon six'  onClick={() => setIsOpen(false)}><FaYoutube /></li>
+                <a href='https://kpi.com/'  onClick={() => setIsOpen(false)} className='navbar_btn'>Company website</a>
             </ul>
             <button className='navbar_bars' onClick={toggleMenu}><HiMiniBars3 /></button>
         </div>

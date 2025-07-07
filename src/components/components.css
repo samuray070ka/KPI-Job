@@ -6,6 +6,7 @@
 .navbar_logo{
     width: 100px;
     height: 80px;
+    animation: logo .4s ease-out;
 }
 .flex{
     flex: 1;
@@ -26,7 +27,24 @@
     cursor: pointer;
     padding: 6px 11px;
     margin-right: 10px;
-
+}
+.one{
+    animation: collaction .4s ease-out .1s;
+}
+.two{
+    animation: collaction .4s ease-out .2s;
+}
+.three{
+    animation: collaction .4s ease-out .3s;
+}
+.four{
+    animation: collaction .4s ease-out .4s;
+}
+.five{
+    animation: collaction .4s ease-out .5s;
+}
+.six{
+    animation: collaction .4s ease-out .6s;
 }
 .navbar_item:hover{
     padding: 6px 11px;
@@ -54,6 +72,7 @@
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    animation: navbarBtn .8s ease-out ;
 }
 .navbar_btn:hover{
     background-color: #1e3a8a;
@@ -204,5 +223,35 @@
 @media screen and (max-width:310px) {
     .footer img{
         width: 200px;
+    }
+}
+@keyframes logo {
+    from {
+        transform: translatex(-200px);
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translatex(0);
+    }
+}
+@keyframes collaction {
+    from{
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+@keyframes navbarBtn {
+    from{
+        transform: translateX(200px);
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0);
     }
 }

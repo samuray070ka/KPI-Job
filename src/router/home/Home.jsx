@@ -169,7 +169,7 @@ function Home() {
             <br />
             <p>We have a horizontal system, a real one. At Holded you will be able to give your opinion, debate, disagree, suggest, propose... and, above all, learn. The best part is that you will shape great ideas hand in hand with your team.</p>
           </div>
-           <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/760237911?h=25f8830e62" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
+           <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/760237911?h=25f8830e62" width="640" height="360"></iframe>
         </div>
       </div>
       <div id='culture' className="value">
@@ -211,7 +211,7 @@ function Home() {
       </div>
        <div className="learning second">
         <div className="container learning_container">
-          <iframe  className='second_video' title="vimeo-player" src="https://player.vimeo.com/video/760228363?h=ef125459cb" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
+          <iframe  className='second_video' title="vimeo-player" src="https://player.vimeo.com/video/760228363?h=ef125459cb" width="640" height="360"></iframe>
             <div className='learn_left'>
             <h1>Draw your career path</h1>
             <br />
@@ -223,42 +223,42 @@ function Home() {
        <div id='jobs' className="container jobs-wrapper">
         <h1>Open positions</h1>
         <br />
-  <div className="departments-tabs">
-    <button
-      className={`tab-btn ${selectedDepartment === "" ? "active" : ""}`}
-      onClick={() => setSelectedDepartment("")}
-    >
-      All departments 
-    </button> 
-    {departments.map((dept) => (
-      <button
-        key={dept}
-        className={`tab-btn ${selectedDepartment === dept ? "active" : ""}`}
-        onClick={() => setSelectedDepartment(dept)}
-      >
-        {dept}{" "}
-        <span className="count">
-          {jobsData.find((d) => d.department === dept)?.jobs.length || 0}
-        </span>
-      </button>
-    ))}
-  </div>
-
-  <div className="jobs-grid">
-    {(selectedDepartment
-      ? jobsData.find((item) => item.department === selectedDepartment)?.jobs
-      : jobsData.flatMap((item) => item.jobs)
-    ).map((job, index) => (
-      <div key={index} className="job-card">
-        <h3 className="job-title">{job.title}</h3>
-        <div className="job-details">
-          <span>🏠 {job.type}</span>
-          <span>📍 {job.location}</span>
+        <div className="departments-tabs">
+          <button
+            className={`tab-btn ${selectedDepartment === "" ? "active" : ""}`}
+            onClick={() => setSelectedDepartment("")}
+          >
+            All departments 
+          </button> 
+          {departments.map((dept) => (
+            <button
+              key={dept}
+              className={`tab-btn ${selectedDepartment === dept ? "active" : ""}`}
+              onClick={() => setSelectedDepartment(dept)}
+            >
+              {dept}{" "}
+              <span className="count">
+                {jobsData.find((d) => d.department === dept)?.jobs.length || 0}
+              </span>
+            </button>
+          ))}
         </div>
-        <button className="view-job-btn">View job</button>
-      </div>
-    ))}
-  </div>
+
+        <div className="jobs-grid">
+          {(selectedDepartment
+            ? jobsData.find((item) => item.department === selectedDepartment)?.jobs
+            : jobsData.flatMap((item) => item.jobs)
+          ).map((job, index) => (
+            <div key={index} className="job-card">
+              <h3 className="job-title">{job.title}</h3>
+              <div className="job-details">
+                <span>🏠 {job.type}</span>
+                <span>📍 {job.location}</span>
+              </div>
+              <button className="view-job-btn">View job</button>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="business">
         <div className="container business_container">
@@ -273,7 +273,7 @@ function Home() {
             <br />
             <p>One of the best things about Holded is that the people who have been there since the beginning are still with us - and in more senior roles. The key? Communication and being clear about the objectives of each team. This way, the product is excellent and the customers are happy. At the end of the day, nothing compares to the satisfaction of a job well done.</p>
           </div>
-           <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/757891971?h=6c7efb5a7c" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
+           <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/757891971?h=6c7efb5a7c" width="640" height="360"></iframe>
         </div>
       </div>
        <div className="business">
@@ -329,7 +329,7 @@ function Home() {
       </div>
        <div className="learning third fixed">
         <div className="container learning_container">
-             <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
+             <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360"></iframe>
           <div className='learn_left h1'>
             <h1>Barcelona, a city to call home.</h1>
             <br />
@@ -400,10 +400,8 @@ function Home() {
                 title="Google Map"
                 width="100%"
                 height="100%"
-                frameBorder="0"
                 style={{ border: 0 }}
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2995.9365089867135!2d69.238373315428!3d41.31108137927115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b5e6b748d7f%3A0x4f62d43620c9a1c7!2sTashkent%2C%20Uzbekistan!5e0!3m2!1sen!2s!4v1625235655560!5m2!1sen!2s"
-                allowFullScreen=""
                 aria-hidden="false"
                 tabIndex="0"
               ></iframe>
