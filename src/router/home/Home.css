@@ -784,7 +784,20 @@
     .map_right{
         padding: 20px 20px;
     }
+    .learn_left h1{
+        font-size: 18px;
+    }
+    .fixed{
+        height: 100vh;
+    }
 }
+@media screen and (max-width:310px) {
+    .learn_left h1{
+        font-size: 16px;
+    }
+    
+}
+
 .glassdoor-container {
   font-family: Arial, sans-serif;
   text-align: center;
@@ -883,6 +896,28 @@
         justify-content: center;
         margin-bottom: 20px;
     }
+}
+@media screen and (max-width:360px) {
+    .glassdoor-container {
+        padding: 0 10px;
+    }
+    .logo {
+        font-size: 24px;
+    }
+    .score {
+        font-size: 20px;
+    }
+    .stars {
+        font-size: 20px;
+    }
+    .metric p {
+        font-size: 14px;
+    }
+    .circle {
+        width: 60px;
+        height: 60px;
+    }
+    
 }
 
 /* join */

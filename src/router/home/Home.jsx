@@ -80,12 +80,12 @@ function Home() {
     setSelectedDepartment(deptNames[0]);
   }, []);
 
-  const handleDepartmentChange = (e) => {
-    setSelectedDepartment(e.target.value);
-  };
+  // const handleDepartmentChange = (e) => {
+  //   setSelectedDepartment(e.target.value);
+  // };
 
-  const selectedJobs =
-    jobsData.find((item) => item.department === selectedDepartment)?.jobs || [];
+  // const selectedJobs =
+  //   jobsData.find((item) => item.department === selectedDepartment)?.jobs || [];
 
   return (
     <div className='home'>
@@ -327,7 +327,7 @@ function Home() {
         </div>
        </div>
       </div>
-       <div className="learning third">
+       <div className="learning third fixed">
         <div className="container learning_container">
              <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
           <div className='learn_left h1'>
@@ -417,5 +417,4 @@ function Home() {
     </div>
   )
 }
-
 export default Home

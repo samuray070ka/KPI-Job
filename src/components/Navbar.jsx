@@ -24,8 +24,8 @@ function Navbar() {
                 <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><FaLinkedin /></li>
                 <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><PiInstagramLogoFill /></li>
                 <li className='navbar_item navbar_icon'  onClick={() => setIsOpen(false)}><FaYoutube /></li>
+              <a href='https://kpi.com/'  onClick={() => setIsOpen(false)} className='navbar_btn'>Company website</a>
             </ul>
-            <a href='https://kpi.com/' className='navbar_btn'>Company website</a>
             <button className='navbar_bars' onClick={toggleMenu}><HiMiniBars3 /></button>
         </div>
     </div>
