@@ -228,8 +228,8 @@ function Home() {
       className={`tab-btn ${selectedDepartment === "" ? "active" : ""}`}
       onClick={() => setSelectedDepartment("")}
     >
-      All departments
-    </button>
+      All departments 
+    </button> 
     {departments.map((dept) => (
       <button
         key={dept}
