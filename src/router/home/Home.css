@@ -1030,3 +1030,40 @@
         width: 280px;
     }
 }
+.departments-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  cursor: pointer;
+  position: relative;
+  color: #333;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab-btn .count {
+  background: #eee;
+  border-radius: 12px;
+  padding: 2px 6px;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.tab-btn.active {
+  color: #e63946;
+  border-bottom: 2px solid #e63946;
+  font-weight: 600;
+}
+
+.tab-btn:hover {
+  color: #e63946;
+}

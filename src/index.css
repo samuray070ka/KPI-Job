@@ -10,3 +10,10 @@
   height: auto;
   margin: auto;
 }
+html {
+  scroll-behavior: smooth;
+}
+.link{
+  text-decoration: none;
+  color: #242424;
+}

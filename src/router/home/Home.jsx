@@ -92,7 +92,7 @@ function Home() {
       <div className="banner_first">
        <div className='box'>
         <h1 className='first_h1'>Your journey starts here</h1>
-        <button className='first_btn'>Open positions</button>
+        <button className='first_btn'><a className='link' href="#jobs">Open positions</a></button>
        </div>
       </div>
       <div className="text_first">
@@ -172,7 +172,7 @@ function Home() {
            <iframe className='first_video' title="vimeo-player" src="https://player.vimeo.com/video/760237911?h=25f8830e62" width="640" height="360" frameborder="0"    allowfullscreen></iframe>
         </div>
       </div>
-      <div className="value">
+      <div id='culture' className="value">
         <div className="container value_container">
           <h1 className='value_h1'>Our values</h1>
           <div className="value_box">
@@ -220,34 +220,45 @@ function Home() {
           </div>
         </div>
       </div>
-       <div className="container jobs-wrapper">
-        <div className="dropdown-container">
-          <label htmlFor="department">Select Department:</label>
-          <select
-            id="department"
-            value={selectedDepartment}
-            onChange={handleDepartmentChange}
-          >
-            {departments.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
-        </div>
+       <div id='jobs' className="container jobs-wrapper">
+        <h1>Open positions</h1>
+        <br />
+  <div className="departments-tabs">
+    <button
+      className={`tab-btn ${selectedDepartment === "" ? "active" : ""}`}
+      onClick={() => setSelectedDepartment("")}
+    >
+      All departments
+    </button>
+    {departments.map((dept) => (
+      <button
+        key={dept}
+        className={`tab-btn ${selectedDepartment === dept ? "active" : ""}`}
+        onClick={() => setSelectedDepartment(dept)}
+      >
+        {dept}{" "}
+        <span className="count">
+          {jobsData.find((d) => d.department === dept)?.jobs.length || 0}
+        </span>
+      </button>
+    ))}
+  </div>
 
-        <div className="jobs-grid">
-          {selectedJobs.map((job, index) => (
-            <div key={index} className="job-card">
-              <h3 className="job-title">{job.title}</h3>
-              <div className="job-details">
-                <span>🏠 {job.type}</span>
-                <span>📍 {job.location}</span>
-              </div>
-              <button className="view-job-btn">View job</button>
-            </div>
-          ))}
+  <div className="jobs-grid">
+    {(selectedDepartment
+      ? jobsData.find((item) => item.department === selectedDepartment)?.jobs
+      : jobsData.flatMap((item) => item.jobs)
+    ).map((job, index) => (
+      <div key={index} className="job-card">
+        <h3 className="job-title">{job.title}</h3>
+        <div className="job-details">
+          <span>🏠 {job.type}</span>
+          <span>📍 {job.location}</span>
         </div>
+        <button className="view-job-btn">View job</button>
+      </div>
+    ))}
+  </div>
       </div>
       <div className="business">
         <div className="container business_container">
@@ -271,7 +282,7 @@ function Home() {
           <img className='img_home_second' src={homeImageSecond} alt="" />
         </div>
       </div>
-      <div className="perks">
+      <div id='perks' className="perks">
        <div className="container perks_container">
          <div className="perks_left">
           Perks and benefits

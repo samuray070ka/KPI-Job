@@ -13,9 +13,9 @@ function Navbar() {
             <img className='navbar_logo' src={logo} alt="" />
             <h1 className='flex'> </h1>
             <ul className='navbar_collaction'>
-                <li className='navbar_item'>Jobs</li>
-                <li className='navbar_item'>Culture</li>
-                <li className='navbar_item'>Perks</li>
+                <a className='navbar_item link' href="#jobs">Jobs</a>
+                <a className='navbar_item link' href='#culture'>Culture</a>
+                <a className='navbar_item link' href='#perks'>Perks</a>
                 <li className='navbar_item navbar_icon'><FaLinkedin /></li>
                 <li className='navbar_item navbar_icon'><PiInstagramLogoFill /></li>
                 <li className='navbar_item navbar_icon'><FaYoutube /></li>
