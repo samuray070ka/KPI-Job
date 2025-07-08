@@ -2,15 +2,19 @@ import { useState } from 'react';
 import './Admin.css';
 
 function AdminPage() {
-  const [section, setSection] = useState('results'); // 'text' emas, 'results' ni default qildik
+  const [section, setSection] = useState('results');
 
-  const [result, setResult] = useState({ number: '', label: '' });
-  const [story, setStory] = useState({ description: '', year: '', icon: '' });
-  const [value, setValue] = useState({ title: '', description: '', icon: '' });
+  const [result, setResult] = useState({ number: '', label: { uz: '', ru: '', en: '' } });
+  const [story, setStory] = useState({ description: { uz: '', ru: '', en: '' }, year: '', icon: '' });
+  const [value, setValue] = useState({ title: { uz: '', ru: '', en: '' }, description: { uz: '', ru: '', en: '' }, icon: '' });
   const [job, setJob] = useState({ department: '', title: '', type: '', location: '' });
-  const [perk, setPerk] = useState({ label: '' });
+  const [perk, setPerk] = useState({ label: { uz: '', ru: '', en: '' } });
   const [work, setWork] = useState({ imageFile: null });
-  const [location, setLocation] = useState({ title: '', description: '', mapEmbedUrl: '' });
+  const [location, setLocation] = useState({
+    title: { uz: '', ru: '', en: '' },
+    description: { uz: '', ru: '', en: '' },
+    mapEmbedUrl: ''
+  });
 
   const endpoints = {
     results: { url: '/results', data: result, setData: setResult },
@@ -26,54 +30,42 @@ function AdminPage() {
     e.preventDefault();
     const current = endpoints[section];
 
-    const isEmptyField = Object.entries(current.data).some(([key, value]) => {
-      if (typeof value === 'boolean') return false;
-      if (key === 'imageFile') return value === null;
-      return value.trim() === '';
+    const res = await fetch(`http://localhost:5000/home${current.url}`, {
+      method: section === 'work' ? 'POST' : 'POST',
+      headers: section === 'work' ? {} : { 'Content-Type': 'application/json' },
+      body: section === 'work'
+        ? (() => {
+            const formData = new FormData();
+            formData.append('image', current.data.imageFile);
+            return formData;
+          })()
+        : JSON.stringify(current.data),
     });
 
-    if (isEmptyField) {
-      alert("Iltimos, barcha maydonlarni to'ldiring!");
+    const resultData = await res.json();
+
+    if (!res.ok) {
+      alert(`❌ Xatolik: ${resultData.message}`);
       return;
     }
 
-    try {
-      let res;
-      if (section === 'work' && current.data.imageFile) {
-        const formData = new FormData();
-        formData.append('image', current.data.imageFile);
+    alert(`✅ ${section} muvaffaqiyatli qo'shildi!`);
 
-        res = await fetch(`http://localhost:5000/home${current.url}`, {
-          method: 'POST',
-          body: formData,
-        });
+    // Reset
+    const resetObj = {};
+    for (let key in current.data) {
+      if (key === 'imageFile') resetObj[key] = null;
+      else if (typeof current.data[key] === 'object') {
+        const sub = {};
+        for (let subKey in current.data[key]) {
+          sub[subKey] = '';
+        }
+        resetObj[key] = sub;
       } else {
-        res = await fetch(`http://localhost:5000/home${current.url}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(current.data),
-        });
+        resetObj[key] = '';
       }
-
-      const resultData = await res.json();
-
-      if (!res.ok) {
-        alert(`❌ Xatolik: ${resultData.message}`);
-        return;
-      }
-
-      alert(`✅ ${section} muvaffaqiyatli qo'shildi!`);
-
-      // Reset form after submit
-      const resetObj = {};
-      for (let key in current.data) {
-        resetObj[key] = typeof current.data[key] === 'boolean' ? false : (key === 'imageFile' ? null : '');
-      }
-      current.setData(resetObj);
-    } catch (err) {
-      console.error("Xatolik:", err);
-      alert("❌ Serverga ulanishda xatolik yuz berdi.");
     }
+    current.setData(resetObj);
   };
 
   const renderForm = () => {
@@ -82,31 +74,52 @@ function AdminPage() {
     return (
       <form className="admin-form" onSubmit={handleSubmit}>
         <h2>{section.toUpperCase()} qo'shish</h2>
-        {Object.keys(current.data).map((key) => {
+
+        {Object.entries(current.data).map(([key, value]) => {
           if (key === 'imageFile') {
             return (
               <input
                 key={key}
                 type="file"
                 accept="image/*"
-                onChange={(e) => current.setData({ ...current.data, [key]: e.target.files[0] })}
+                onChange={(e) => current.setData({ ...current.data, imageFile: e.target.files[0] })}
               />
             );
+          }
+
+          // Nested fields for multilingual inputs
+          if (typeof value === 'object') {
+            return Object.keys(value).map((lang) => (
+              <input
+                className="sa"
+                key={`${key}-${lang}`}
+                type="text"
+                placeholder={`${key} [${lang}]`}
+                value={value[lang]}
+                onChange={(e) => {
+                  current.setData({
+                    ...current.data,
+                    [key]: { ...current.data[key], [lang]: e.target.value },
+                  });
+                }}
+              />
+            ));
           }
 
           const type = key.toLowerCase().includes('number') ? 'number' : 'text';
 
           return (
             <input
-            className='sa'
+              className="sa"
               key={key}
               type={type}
               placeholder={key}
-              value={current.data[key]}
+              value={value}
               onChange={(e) => current.setData({ ...current.data, [key]: e.target.value })}
             />
           );
         })}
+
         <button type="submit">Yuborish</button>
       </form>
     );

@@ -3,6 +3,7 @@ import "./Home.css";
 import homeImageFirst from '../../assets/CEbZrJcVt13J.webp';
 import homeImageSecond from '../../assets/MSuhC8ollm9F.webp';
 import { FaCheck } from "react-icons/fa6";
+import { useLang } from '../../LanguageContext.jsx'; 
 
 function Home() {
   const [results, setResults] = useState([]);
@@ -71,6 +72,9 @@ function Home() {
   const selectedJobs = selectedDepartment
     ? jobsData.find((item) => item.department === selectedDepartment)?.jobs || []
     : jobsData.flatMap((item) => item.jobs) || [];
+
+  const { lang } = useLang();
+
   return (
     <div className='home'>
 
@@ -106,7 +110,7 @@ function Home() {
             {results.map((item, i) => (
               <div className="result_card" key={i}>
                 <h2>{item.number}</h2>
-                <p>{item.label}</p>
+                <p>{item.label[lang]}</p>
               </div>
             ))}
           </div>
@@ -123,7 +127,7 @@ function Home() {
             {stories.map((item, i) => (
               <div className='story_box' key={i}>
                 <button><FaCheck/></button>
-                <h5>{item.description}</h5>
+                <h5>{item.description[lang]}</h5>
                 <p>{item.year}</p>
               </div>
             ))}
@@ -152,8 +156,8 @@ function Home() {
               <div className="value_card" key={i}>
                 <div className='value_icon' />
                 <FaCheck/>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+                <h3>{item.title[lang]}</h3>
+                <p>{item.description[lang]}</p>
               </div>
             ))}
           </div>
@@ -232,7 +236,7 @@ function Home() {
             {perks.map((item, i) => (
               <div className='perks_box' key={i}>
                 <button><FaCheck /></button>
-                <p>{item.label}</p>
+                <p>{item.label[lang]}</p>
               </div>
             ))}
           </div>
@@ -291,8 +295,8 @@ function Home() {
               />
             </div>
             <div className='map_right'>
-              <h1>{locationData.title}</h1>
-              <p>{locationData.description}</p>
+              <h1>{locationData.title[lang]}</h1>
+              <p>{locationData.description[lang]}</p>
             </div>
           </div>
         </div>

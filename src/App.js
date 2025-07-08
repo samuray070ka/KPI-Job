@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './router/home/Home';
 import Admin from './router/admin/Admin'
+import { LanguageProvider } from './LanguageContext.jsx';
 
 
 function App() {
@@ -11,14 +12,16 @@ function App() {
   const isAdmin = location.pathname.startsWith("/admin");
   return (
     <div className="App">
+      <LanguageProvider>
        {!isAdmin && <Navbar />}
-      
+
       <Routes>
         <Route path='/' element={<Home />} /> 
         <Route path='/admin' element={<Admin />} /> 
       </Routes>
       
       {!isAdmin && <Footer />}
+      </LanguageProvider>
     </div>
   );
 }
