@@ -1,240 +1,190 @@
-import { useState, useEffect } from 'react'
-import "./Home.css"
-import { HiUsers } from "react-icons/hi2";
-import { HiCurrencyDollar } from "react-icons/hi2";
-import { LuChartNoAxesCombined } from "react-icons/lu";
-import { FaBuilding } from "react-icons/fa";
-import { IoHome } from "react-icons/io5";
-import { GoStar } from "react-icons/go";
-import { FaRegHeart } from "react-icons/fa";
-import { IoFlagOutline } from "react-icons/io5";
-import { PiUsersThree } from "react-icons/pi";
-import { SlPencil } from "react-icons/sl";
-import { PiStarFourBold } from "react-icons/pi";
-import homeImageFirst from '../../assets/CEbZrJcVt13J.webp'
-import homeImageSecond from '../../assets/MSuhC8ollm9F.webp'
+import { useState, useEffect } from 'react';
+import "./Home.css";
+import homeImageFirst from '../../assets/CEbZrJcVt13J.webp';
+import homeImageSecond from '../../assets/MSuhC8ollm9F.webp';
 import { FaCheck } from "react-icons/fa6";
 
-const staticData = [
-  {
-    department: "Customer Success",
-    jobs: [
-      {
-        title: "Call Center Support Team Lead",
-        type: "Hybrid",
-        location: "Barcelona, Catalunya [Cataluña], Spain",
-      },
-      {
-        title: "Customer Support Specialist",
-        type: "Hybrid",
-        location: "Barcelona, Catalunya [Cataluña], Spain",
-      },
-    ],
-  },
-  {
-    department: "Finance",
-    jobs: [
-      {
-        title: "Billing Analyst",
-        type: "Hybrid",
-        location: "Barcelona, Catalunya [Cataluña], Spain",
-      },
-    ],
-  },
-  {
-    department: "Marketing",
-    jobs: [
-      {
-        title: "Content Creator & Video Editor",
-        type: "Hybrid",
-        location: "Barcelona, Catalunya [Cataluña], Spain",
-      },
-    ],
-  },
-];
-
 function Home() {
-
- const [jobsData, setJobsData] = useState([]);
+  const [results, setResults] = useState([]);
+  const [stories, setStories] = useState([]);
+  const [values, setValues] = useState([]);
+  const [jobsRawData, setJobsRawData] = useState([]);
+  const [jobsData, setJobsData] = useState([]);
+  const [perks, setPerks] = useState([]);
+  const [workImages, setWorkImages] = useState([]);
+  const [locationData, setLocationData] = useState(null);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState("");
 
   useEffect(() => {
-    setJobsData(staticData);
-    const deptNames = staticData.map((item) => item.department);
-    setDepartments(deptNames);
-    setSelectedDepartment(deptNames[0]);
+    async function fetchData() {
+      const endpoints = [
+        'results', 'story', 'values', 'jobs', 'perks', 'work', 'location'
+      ];
+
+      try {
+        const dataObj = {};
+        for (let endpoint of endpoints) {
+          const res = await fetch(`http://localhost:5000/home/${endpoint}`);
+          const data = await res.json();
+          dataObj[endpoint] = data;
+        }
+
+        setResults(dataObj.results || []);
+        setStories(dataObj.story || []);
+        setValues(dataObj.values || []);
+        setJobsRawData(dataObj.jobs || []);
+        setPerks(dataObj.perks || []);
+        setWorkImages(dataObj.work || []);
+        
+
+        const locationFetched = dataObj.location;
+        setLocationData(Array.isArray(locationFetched) ? locationFetched[0] : locationFetched);
+
+      } catch (err) {
+        console.error("Ma’lumotlarni olishda xatolik:", err);
+      }
+    }
+
+    fetchData();
   }, []);
 
-  // const handleDepartmentChange = (e) => {
-  //   setSelectedDepartment(e.target.value);
-  // };
+  useEffect(() => {
+    const deptGrouped = {};
+    jobsRawData.forEach(job => {
+      if (!deptGrouped[job.department]) {
+        deptGrouped[job.department] = [];
+      }
+      deptGrouped[job.department].push(job);
+    });
 
-  // const selectedJobs =
-  //   jobsData.find((item) => item.department === selectedDepartment)?.jobs || [];
+    const groupedJobs = Object.keys(deptGrouped).map(dept => ({
+      department: dept,
+      jobs: deptGrouped[dept],
+    }));
 
+    setDepartments(Object.keys(deptGrouped));
+    setSelectedDepartment(Object.keys(deptGrouped)[0] || "");
+    setJobsData(groupedJobs);
+  }, [jobsRawData]);
+
+  const selectedJobs = selectedDepartment
+    ? jobsData.find((item) => item.department === selectedDepartment)?.jobs || []
+    : jobsData.flatMap((item) => item.jobs) || [];
   return (
     <div className='home'>
+
+      {/* Banner */}
       <div className="banner_first">
-       <div className='box'>
-        <h1 className='first_h1'>Your journey starts here</h1>
-        <button className='first_btn'><a className='link' href="#jobs">Open positions</a></button>
-       </div>
+        <div className='box'>
+          <h1 className='first_h1'>Your journey starts here</h1>
+          <button className='first_btn'>
+            <a className='link' href="#jobs">Open positions</a>
+          </button>
+        </div>
       </div>
+
+      {/* Intro Text */}
       <div className="text_first">
         <h1 className='t_first_h1'>Join the team, make an impact.</h1>
         <br />
-        <h4 className='t_first_h4'>At Holded, we believe that daily admin should never stop a great idea from becoming a success. That's why we create intuitive software to empower anyone who dares to start their own business. Long story short: we want to make business simple. <br /> <br /> In order to create cutting-edge products that meet the needs of the sector, talent is essential. <strong> We are looking for passion, creativity and commitment.</strong> In return, we offer the same. <br /> <br /> Think you fit the bill? We'd love to hear from you!</h4>
+        <h4 className='t_first_h4'>
+          At Holded, we believe that daily admin should never stop a great idea from becoming a success. That's why we create intuitive software to empower anyone who dares to start their own business.
+          <br /><br />
+          In order to create cutting-edge products that meet the needs of the sector, talent is essential.
+          <strong> We are looking for passion, creativity and commitment.</strong>
+          <br /><br />
+          Think you fit the bill? We'd love to hear from you!
+        </h4>
       </div>
+
+      {/* Results */}
       <div className="results">
-       <div className="container results_container">
-         <h1 className='results_h1'>Holded in numbers</h1>
-        <div className='result_cards'>
-          <div className="result_card">
-            <h2>+80K</h2>
-            <p>Users</p>
-          </div>
-          <div className="result_card">
-            <h2>+126</h2>
-            <p>Partners</p>
-          </div>
-          <div className="result_card">
-            <h2>+140</h2>
-            <p>Employees</p>
-          </div>
-          <div className="result_card">
-            <h2>+19</h2>
-            <p>Nationalities</p>
+        <div className="container results_container">
+          <h1 className='results_h1'>Holded in numbers</h1>
+          <div className='result_cards'>
+            {results.map((item, i) => (
+              <div className="result_card" key={i}>
+                <h2>{item.number}</h2>
+                <p>{item.label}</p>
+              </div>
+            ))}
           </div>
         </div>
-       </div>
       </div>
+
+      {/* Story */}
       <div className="story">
-       <div className='container story_container'>
-         <div className="story_right">
-          <h1>Our story...</h1>
-        </div>
-        <div className="story_left">
-          <div className='story_box'>
-            <button><HiUsers /></button>
-            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, fuga.</h5>
-            <p>2015</p>
+        <div className='container story_container'>
+          <div className="story_right">
+            <h1>Our story...</h1>
           </div>
-          <div className='story_box'>
-            <button><HiCurrencyDollar /></button>
-            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, fuga.</h5>
-            <p>2015</p>
-          </div>
-          <div className='story_box'>
-            <button><HiCurrencyDollar /></button>
-            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, fuga.</h5>
-            <p>2015</p>
-          </div>
-          <div className='story_box'>
-            <button><LuChartNoAxesCombined /></button>
-            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, fuga.</h5>
-            <p>2015</p>
-          </div>
-          <div className='story_box'>
-            <button><FaBuilding /></button>
-            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, fuga.</h5>
-            <p>2015</p>
-          </div>
-          <div className='story_box'>
-            <button><IoHome /></button>
-            <h5>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid, fuga.</h5>
-            <p>2015</p>
+          <div className="story_left">
+            {stories.map((item, i) => (
+              <div className='story_box' key={i}>
+                <button><FaCheck/></button>
+                <h5>{item.description}</h5>
+                <p>{item.year}</p>
+              </div>
+            ))}
           </div>
         </div>
-       </div>
       </div>
+
+      {/* Learning Section 1 */}
       <div className="learning">
         <div className="container learning_container">
           <div className='learn_left'>
             <h1>Continuous learning</h1>
             <br />
-            <p>We have a horizontal system, a real one. At Holded you will be able to give your opinion, debate, disagree, suggest, propose... and, above all, learn. The best part is that you will shape great ideas hand in hand with your team.</p>
+            <p>We have a horizontal system... and, above all, learn.</p>
           </div>
-           <iframe className='first_video' title="vimeo-player"frameBorder={"0"} src="https://player.vimeo.com/video/760237911?h=25f8830e62" width="640" height="360"></iframe>
+          <iframe className='first_video' title="vimeo-player" frameBorder="0" src="https://player.vimeo.com/video/760237911?h=25f8830e62" width="640" height="360"></iframe>
         </div>
       </div>
+
+      {/* Our values */}
       <div id='culture' className="value">
         <div className="container value_container">
           <h1 className='value_h1'>Our values</h1>
           <div className="value_box">
-            <div className="value_card">
-            <GoStar className='value_icon'/>
-            <h3>Excellence</h3>
-            <p>High standards are a way of life. Each of us strive to be the best version of ourselves and be part of a team with the same objectives.</p>
-          </div>
-          <div className="value_card">
-            <FaRegHeart className='value_icon'/>
-            <h3>Passion</h3>
-            <p>It is what gives meaning to our work and what makes us go for more. And we use it to energize, engage and inspire others.</p>
-          </div>
-          <div className="value_card">
-            <IoFlagOutline className='value_icon'/>
-            <h3>Ambition</h3>
-            <p>We are eager to become the best company of our kind and to help our customers become the best in their industries, too.</p>
-          </div>
-          <div className="value_card">
-            <PiUsersThree className='value_icon'/>
-            <h3>Commitment</h3>
-            <p>Lasting relationships are the lifeblood of our business. Sharing a common goal within the company and clients is of paramount importance.</p>
-          </div>
-          <div className="value_card">
-            <SlPencil className='value_icon'/>
-            <h3>Innovation</h3>
-            <p>For us, experimenting, inventing and innovating is the norm. We want to evolve with our customers, and that's what keeps us going forward.</p>
-          </div>
-          <div className="value_card">
-            <PiStarFourBold className='value_icon'/>
-            <h3>Transparency</h3>
-            <p>We aim to make information accessible to everyone. Every employee has access to a Wiki with all essential information about Holded.</p>
-          </div>
+            {values.map((item, i) => (
+              <div className="value_card" key={i}>
+                <div className='value_icon' />
+                <FaCheck/>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-       <div className="learning second">
+
+      {/* Learning Section 2 */}
+      <div className="learning second">
         <div className="container learning_container">
-          <iframe  className='second_video' title="vimeo-player"frameBorder={"0"} src="https://player.vimeo.com/video/760228363?h=ef125459cb" width="640" height="360"></iframe>
-            <div className='learn_left'>
+          <iframe className='second_video' title="vimeo-player" frameBorder="0" src="https://player.vimeo.com/video/760228363?h=ef125459cb" width="640" height="360"></iframe>
+          <div className='learn_left'>
             <h1>Draw your career path</h1>
-            <br />
-            <p>We value multi-skilled profiles. Once you join the team, nothing will stop your creativity or your desire to innovate. For example, in one of our brainstorming sessions, we came up with the idea of asking the city What is your dream?
-              <br /> <br /> At Holded, we grow with you and we will give you everything we can to help you get where you want to be.</p>
+            <p>We value multi-skilled profiles...</p>
           </div>
         </div>
       </div>
-       <div id='jobs' className="container jobs-wrapper">
+
+      {/* Open Positions */}
+      <div id='jobs' className="container jobs-wrapper">
         <h1>Open positions</h1>
-        <br />
         <div className="departments-tabs">
-          <button
-            className={`tab-btn ${selectedDepartment === "" ? "active" : ""}`}
-            onClick={() => setSelectedDepartment("")}
-          >
-            All departments 
-          </button> 
+          <button className={`tab-btn ${selectedDepartment === "" ? "active" : ""}`} onClick={() => setSelectedDepartment("")}>All departments</button>
           {departments.map((dept) => (
-            <button
-              key={dept}
-              className={`tab-btn ${selectedDepartment === dept ? "active" : ""}`}
-              onClick={() => setSelectedDepartment(dept)}
-            >
-              {dept}{" "}
-              <span className="count">
-                {jobsData.find((d) => d.department === dept)?.jobs.length || 0}
-              </span>
+            <button key={dept} className={`tab-btn ${selectedDepartment === dept ? "active" : ""}`} onClick={() => setSelectedDepartment(dept)}>
+              {dept}
+              <span className="count">{jobsData.find((d) => d.department === dept)?.jobs.length || 0}</span>
             </button>
           ))}
         </div>
-
         <div className="jobs-grid">
-          {(selectedDepartment
-            ? jobsData.find((item) => item.department === selectedDepartment)?.jobs
-            : jobsData.flatMap((item) => item.jobs)
-          ).map((job, index) => (
+          {selectedJobs.map((job, index) => (
             <div key={index} className="job-card">
               <h3 className="job-title">{job.title}</h3>
               <div className="job-details">
@@ -246,106 +196,88 @@ function Home() {
           ))}
         </div>
       </div>
+
+      {/* Business Recruitment Process */}
       <div className="business">
         <div className="container business_container">
           <h1>Business recruitment process</h1>
           <img className='img_home' src={homeImageFirst} alt="" />
         </div>
       </div>
+
+      {/* Trust & Experience */}
       <div className="learning second">
         <div className="container learning_container">
           <div className='learn_left'>
             <h1>Trust and experience</h1>
-            <br />
-            <p>One of the best things about Holded is that the people who have been there since the beginning are still with us - and in more senior roles. The key? Communication and being clear about the objectives of each team. This way, the product is excellent and the customers are happy. At the end of the day, nothing compares to the satisfaction of a job well done.</p>
+            <p>One of the best things about Holded...</p>
           </div>
-           <iframe className='first_video' title="vimeo-player"frameBorder={"0"} src="https://player.vimeo.com/video/757891971?h=6c7efb5a7c" width="640" height="360"></iframe>
+          <iframe className='first_video' title="vimeo-player" frameBorder="0" src="https://player.vimeo.com/video/757891971?h=6c7efb5a7c" width="640" height="360"></iframe>
         </div>
       </div>
-       <div className="business">
+
+      {/* Engineering Recruitment Process */}
+      <div className="business">
         <div className="container business_container">
-          <h1>Engineering recruitment process:</h1>
+          <h1>Engineering recruitment process</h1>
           <img className='img_home_second' src={homeImageSecond} alt="" />
         </div>
       </div>
+
+      {/* Perks */}
       <div id='perks' className="perks">
-       <div className="container perks_container">
-         <div className="perks_left">
-          Perks and benefits
-        </div>
-        <div className="perks_right">
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Flexible working hours</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>26 paid days-off</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Short work day on Fridays</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Team Building Events</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Yearly budget for individual training</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Free English and Spanish lessons</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Fully equipped kitchen with snacks, drinks and fresh fruit</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Top-notch work equipment</p>
-          </div>
-          <div className='perks_box'>
-            <button><FaCheck /></button>
-            <p>Ping pong, pool table and gaming zone</p>
+        <div className="container perks_container">
+          <div className="perks_left">Perks and benefits</div>
+          <div className="perks_right">
+            {perks.map((item, i) => (
+              <div className='perks_box' key={i}>
+                <button><FaCheck /></button>
+                <p>{item.label}</p>
+              </div>
+            ))}
           </div>
         </div>
-       </div>
       </div>
-       <div className="learning third fixed">
+
+      {/* Barcelona section */}
+      <div className="learning third fixed">
         <div className="container learning_container">
-             <iframe className='first_video' title="vimeo-player" frameBorder={"0"} src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360"></iframe>
+          <iframe className='first_video' title="vimeo-player" frameBorder="0" src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360"></iframe>
           <div className='learn_left h1'>
             <h1>Barcelona, a city to call home.</h1>
-            <br />
-            <p>Holded's talent comes from over 20 different countries. We like to think it's because of the good vibes, the great perks, and the views from the office, but we know it's actually because of the large selection of snacks. Jokes aside, having a multicultural team enriches all aspects of our day-to-day life and has helped us get to where we are today. No matter where you come from, what makes a difference is that you want to stay.</p>
+            <p>Holded's talent comes from over 20 different countries...</p>
           </div>
-          
         </div>
       </div>
+
+      {/* Why Join Us */}
       <div className="join">
         <div className="container join_container">
           <h1>Why join us</h1>
           <ul className='join_collaction'>
-            <li className='join_item'>Join because you’re constantly learning and want to improve. We think you will.</li>
-            <li className='join_item'>Join because you want to work with a team that trusts you and rewards your achievements.</li>
-            <li className='join_item'>Join because you want to grow as a professional, not chase your next paycheck.</li>
-            <li className='join_item'>Join because you like our culture and share our values.</li>
-            <li className='join_item'>Join because in three years time, when you look at this job on your CV, you want to be proud.</li>
+            <li className='join_item'>Join because you’re constantly learning...</li>
+            <li className='join_item'>Join because you want to work with a team that trusts you...</li>
+            <li className='join_item'>Join because you want to grow as a professional...</li>
+            <li className='join_item'>Join because you like our culture...</li>
+            <li className='join_item'>Join because in three years time...</li>
           </ul>
         </div>
       </div>
-      <div className='work'>
+
+      {/* Work Images (from backend) */}
+     <div className='work'>
         <h1>Love your work</h1>
         <p>And where you work</p>
         <div className="container work_container">
-          <img className='work_img' src="https://careers.recruiteecdn.com/image/upload/q_auto,f_auto,w_1920,c_limit/production/images/ARwe/po5E8m7GajyQ.jpeg" alt="" />
-          <img className='work_img_old' src="https://careers.recruiteecdn.com/image/upload/q_auto,f_auto,w_1920,c_limit/production/images/9QI/Ue-mJpiDKz9s.jpeg" alt="" />
-          <img className='work_img end' src="https://careers.recruiteecdn.com/image/upload/q_auto,f_auto,w_1920,c_limit/production/images/ARwf/RckyYr2szgHP.jpeg" alt="" />
+          {workImages.map((img, i) => (
+            <img key={i} className="work_img" src={img.imageUrl} alt={`Work ${i}`} />
+          ))}
         </div>
       </div>
-      <div className="map">
+
+      {/* Google Map from backend */}
+       {locationData && (
+        <div className="map">
           <div className='container map_container'>
             <div className='map_left'>
               <iframe
@@ -353,18 +285,21 @@ function Home() {
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2995.9365089867135!2d69.238373315428!3d41.31108137927115!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b5e6b748d7f%3A0x4f62d43620c9a1c7!2sTashkent%2C%20Uzbekistan!5e0!3m2!1sen!2s!4v1625235655560!5m2!1sen!2s"
-                aria-hidden="false"
-                tabIndex="0"
-              ></iframe>
+                src={locationData.mapEmbedUrl || ""}
+                allowFullScreen
+                loading="lazy"
+              />
             </div>
             <div className='map_right'>
-              <h1>Location</h1>
-              <p>Stunning sea views at our offices in sunny Barcelona. Next to the seaport of la Barceloneta close to the central area of the city. <br /><br /> Address <br /> Paseo Juan de Borbón 101, planta 6, 08039 Barcelona</p>
+              <h1>{locationData.title}</h1>
+              <p>{locationData.description}</p>
             </div>
           </div>
-      </div>
+        </div>
+      )}
+
     </div>
-  )
+  );
 }
-export default Home
+
+export default Home;
