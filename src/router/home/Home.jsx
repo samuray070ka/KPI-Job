@@ -54,20 +54,6 @@ const staticData = [
 ];
 
 function Home() {
-  const metrics = [
-  {
-    label: "Recommend to a friend",
-    percent: 93
-  },
-  {
-    label: "CEO Approval",
-    percent: 94
-  },
-  {
-    label: "Positive Business Outlook",
-    percent: 92
-  }
-];
 
  const [jobsData, setJobsData] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -337,40 +323,6 @@ function Home() {
           </div>
           
         </div>
-      </div>
-       <div className="glassdoor-container">
-    <div className="header">
-      <span className="logo">glassdoor</span>
-      <span className="score">4,7</span>
-      <span className="stars">★★★★★</span>
-    </div>
-    <div className="metrics">
-      {metrics.map((item, index) => (
-        <div className="metric" key={index}>
-          <div className="circle">
-            <svg viewBox="0 0 36 36">
-              <path
-                className="bg"
-                d="M18 2.0845
-                   a 15.9155 15.9155 0 0 1 0 31.831
-                   a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-              <path
-                className="progress"
-                strokeDasharray={`${item.percent}, 100`}
-                d="M18 2.0845
-                   a 15.9155 15.9155 0 0 1 0 31.831
-                   a 15.9155 15.9155 0 0 1 0 -31.831"
-              />
-              <text x="18" y="20.35" className="percentage">
-                {item.percent}%
-              </text>
-            </svg>
-          </div>
-          <p>{item.label}</p>
-        </div>
-      ))}
-    </div>
       </div>
       <div className="join">
         <div className="container join_container">
