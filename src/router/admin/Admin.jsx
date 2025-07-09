@@ -17,7 +17,7 @@ function AdminPage() {
   const [section, setSection] = useState('results');
 
   const [result, setResult] = useState({ number: '', label: { uz: '', ru: '', en: '' } });
-  const [story, setStory] = useState({ description: { uz: '', ru: '', en: '' }, year: '', icon: '' });
+  const [story, setStory] = useState({ description: { uz: '', ru: '', en: '' }, year: ''});
   const [value, setValue] = useState({ title: { uz: '', ru: '', en: '' }, description: { uz: '', ru: '', en: '' }, icon: '' });
   const [job, setJob] = useState({ department: '', title: '', type: '', location: '' });
   const [perk, setPerk] = useState({ label: { uz: '', ru: '', en: '' } });
@@ -38,47 +38,73 @@ function AdminPage() {
     location: { url: '/location', data: location, setData: setLocation },
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const current = endpoints[section];
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const current = endpoints[section];
 
-    const res = await fetch(`http://localhost:5000/home${current.url}`, {
-      method: section === 'work' ? 'POST' : 'POST',
-      headers: section === 'work' ? {} : { 'Content-Type': 'application/json' },
-      body: section === 'work'
-        ? (() => {
-            const formData = new FormData();
-            formData.append('image', current.data.imageFile);
-            return formData;
-          })()
-        : JSON.stringify(current.data),
-    });
-
-    const resultData = await res.json();
-
-    if (!res.ok) {
-      alert(`❌ Xatolik: ${resultData.message}`);
-      return;
-    }
-
-    alert(`✅ ${section} muvaffaqiyatli qo'shildi!`);
-
-    // Reset
-    const resetObj = {};
-    for (let key in current.data) {
-      if (key === 'imageFile') resetObj[key] = null;
-      else if (typeof current.data[key] === 'object') {
-        const sub = {};
-        for (let subKey in current.data[key]) {
-          sub[subKey] = '';
+  // 👇 Barcha input maydonlari to‘ldirilganligini tekshiruvchi funksiya
+  const hasEmptyFields = (obj) => {
+    for (let key in obj) {
+      const value = obj[key];
+      if (typeof value === 'object' && value !== null) {
+        for (let subKey in value) {
+          if (value[subKey] === '') {
+            return true; // 👈 nested object ichida bo‘sh maydon topildi
+          }
         }
-        resetObj[key] = sub;
       } else {
-        resetObj[key] = '';
+        if (value === '' || value === null) {
+          return true; // 👈 oddiy maydon bo‘sh
+        }
       }
     }
-    current.setData(resetObj);
+    return false; // ✅ hammasi to‘ldirilgan
   };
+
+  if (hasEmptyFields(current.data)) {
+    alert("❌ Iltimos, barcha maydonlarni to‘ldiring!");
+    return;
+  }
+
+  // ✅ Ma'lumotlarni yuborish
+  const res = await fetch(`http://localhost:5000/home${current.url}`, {
+    method: 'POST',
+    headers: section === 'work' ? {} : { 'Content-Type': 'application/json' },
+    body: section === 'work'
+      ? (() => {
+          const formData = new FormData();
+          formData.append('image', current.data.imageFile);
+          return formData;
+        })()
+      : JSON.stringify(current.data),
+  });
+
+  const resultData = await res.json();
+
+  if (!res.ok) {
+    alert(`❌ Xatolik: ${resultData.message}`);
+    return;
+  }
+
+  alert(`✅ ${sectionLabels[section]} muvaffaqiyatli qo'shildi!`);
+
+  // 🔁 Reset qilish
+  const resetObj = {};
+  for (let key in current.data) {
+    if (key === 'imageFile') resetObj[key] = null;
+    else if (typeof current.data[key] === 'object') {
+      const sub = {};
+      for (let subKey in current.data[key]) {
+        sub[subKey] = '';
+      }
+      resetObj[key] = sub;
+    } else {
+      resetObj[key] = '';
+    }
+  }
+  current.setData(resetObj);
+};
+
 
  const renderSection = () => {
   if (section === 'view-all') return <AllDataViewer />;
