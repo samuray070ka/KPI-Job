@@ -128,7 +128,7 @@ function Home() {
 
     work_text: { uz: 'Va qaerda ishlaysiz', ru: 'И где ты работаешь', en: 'And where you work' },
 
-    footer: { uz: `Ishga qabul qilingan \ Karyera`, ru: 'Holded \ Карьера', en: 'holded \ Careers' }
+    footer: { uz: `Ishga qabul qilingan / Karyera`, ru: 'Holded / Карьера', en: 'holded / Careers' }
   };
   return (
     <div className='home'>
