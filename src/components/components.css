@@ -121,7 +121,7 @@
         height: 80px;
     }
 }
-@media screen and (max-width:665px) {
+@media screen and (max-width:880px) {
     .navbar_collaction{
         display: none;
     }
