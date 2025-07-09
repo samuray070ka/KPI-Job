@@ -42,23 +42,22 @@ function AdminPage() {
   e.preventDefault();
   const current = endpoints[section];
 
-  // 👇 Barcha input maydonlari to‘ldirilganligini tekshiruvchi funksiya
   const hasEmptyFields = (obj) => {
     for (let key in obj) {
       const value = obj[key];
       if (typeof value === 'object' && value !== null) {
         for (let subKey in value) {
           if (value[subKey] === '') {
-            return true; // 👈 nested object ichida bo‘sh maydon topildi
+            return true; 
           }
         }
       } else {
         if (value === '' || value === null) {
-          return true; // 👈 oddiy maydon bo‘sh
+          return true; 
         }
       }
     }
-    return false; // ✅ hammasi to‘ldirilgan
+    return false; 
   };
 
   if (hasEmptyFields(current.data)) {
@@ -66,7 +65,6 @@ function AdminPage() {
     return;
   }
 
-  // ✅ Ma'lumotlarni yuborish
   const res = await fetch(`http://localhost:5000/home${current.url}`, {
     method: 'POST',
     headers: section === 'work' ? {} : { 'Content-Type': 'application/json' },
@@ -88,7 +86,6 @@ function AdminPage() {
 
   alert(`✅ ${sectionLabels[section]} muvaffaqiyatli qo'shildi!`);
 
-  // 🔁 Reset qilish
   const resetObj = {};
   for (let key in current.data) {
     if (key === 'imageFile') resetObj[key] = null;
