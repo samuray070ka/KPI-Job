@@ -1189,7 +1189,6 @@
 }
 .learning{
     height: 90vh;
-    border: 1px solid red;
 }
 @media screen and (max-width:400px) {
     .learning{

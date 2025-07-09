@@ -1,7 +1,19 @@
 import { useState } from 'react';
 import './Admin.css';
+import AllDataViewer from './AllDataViewer';
 
 function AdminPage() {
+  const sectionLabels = {
+  results: 'Holded in numbers',
+  story: 'Our story',
+  values: 'Our values',
+  jobs: 'Open positions',
+  perks: 'Perks and benefits',
+  work: 'Love your work',
+  location: 'Location',
+  'view-all': "Previous information",
+};
+
   const [section, setSection] = useState('results');
 
   const [result, setResult] = useState({ number: '', label: { uz: '', ru: '', en: '' } });
@@ -68,62 +80,73 @@ function AdminPage() {
     current.setData(resetObj);
   };
 
-  const renderForm = () => {
-    const current = endpoints[section];
-
-    return (
-      <form className="admin-form" onSubmit={handleSubmit}>
-        <h2>{section.toUpperCase()} qo'shish</h2>
-
-        {Object.entries(current.data).map(([key, value]) => {
-          if (key === 'imageFile') {
-            return (
-              <input
-                key={key}
-                type="file"
-                accept="image/*"
-                onChange={(e) => current.setData({ ...current.data, imageFile: e.target.files[0] })}
-              />
-            );
-          }
-
-          // Nested fields for multilingual inputs
-          if (typeof value === 'object') {
-            return Object.keys(value).map((lang) => (
-              <input
-                className="sa"
-                key={`${key}-${lang}`}
-                type="text"
-                placeholder={`${key} [${lang}]`}
-                value={value[lang]}
-                onChange={(e) => {
-                  current.setData({
-                    ...current.data,
-                    [key]: { ...current.data[key], [lang]: e.target.value },
-                  });
-                }}
-              />
-            ));
-          }
-
-          const type = key.toLowerCase().includes('number') ? 'number' : 'text';
-
+ const renderSection = () => {
+  if (section === 'view-all') return <AllDataViewer />;
+  else return (
+    <form className="admin-form" onSubmit={handleSubmit}>
+      <h2>{sectionLabels[section]} qo'shish</h2>
+      {Object.entries(endpoints[section].data).map(([key, value]) => {
+        if (key === 'imageFile') {
           return (
             <input
-              className="sa"
               key={key}
-              type={type}
-              placeholder={key}
-              value={value}
-              onChange={(e) => current.setData({ ...current.data, [key]: e.target.value })}
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                endpoints[section].setData({
+                  ...endpoints[section].data,
+                  imageFile: e.target.files[0],
+                })
+              }
             />
           );
-        })}
+        }
 
-        <button type="submit">Yuborish</button>
-      </form>
-    );
-  };
+        if (typeof value === 'object') {
+          return Object.keys(value).map((lang) => (
+            <input
+              className="sa"
+              key={`${key}-${lang}`}
+              type="text"
+              placeholder={`${key} [${lang}]`}
+              value={value[lang]}
+              onChange={(e) =>
+                endpoints[section].setData({
+                  ...endpoints[section].data,
+                  [key]: {
+                    ...endpoints[section].data[key],
+                    [lang]: e.target.value,
+                  },
+                })
+              }
+            />
+          ));
+        }
+
+        const type = key.toLowerCase().includes('number') ? 'number' : 'text';
+
+        return (
+          <input
+            className="sa"
+            key={key}
+            type={type}
+            placeholder={key}
+            value={value}
+            onChange={(e) =>
+              endpoints[section].setData({
+                ...endpoints[section].data,
+                [key]: e.target.value,
+              })
+            }
+          />
+        );
+      })}
+
+      <button type="submit">Yuborish</button>
+    </form>
+  );
+};
+
 
   return (
     <div className="admin-layout">
@@ -135,11 +158,18 @@ function AdminPage() {
             onClick={() => setSection(key)}
             className={section === key ? 'active' : ''}
           >
-            {key.charAt(0).toUpperCase() + key.slice(1)}
+            {sectionLabels[key]}
           </button>
         ))}
+        <button
+          onClick={() => setSection('view-all')}
+          className={section === 'view-all' ? 'active' : ''}
+        >
+          {sectionLabels['view-all']}
+        </button>
       </div>
-      <div className="admin-content">{renderForm()}</div>
+
+      <div className="admin-content">{renderSection()}</div>
     </div>
   );
 }
