@@ -240,9 +240,10 @@
 }
 @media screen and (max-width:730px) {
     .story_right h1{
+        width: 300px;
         font-size: 20px;
         padding: 5px 10px;
-        transform: translateX(10px) translateY(-40px);
+        transform: translateX(10px) translateY(-50px);
     }
 }
 @media screen and (max-width:700px) {
@@ -356,7 +357,7 @@
 }
 @media screen and (max-width:800px) {
     .learning{
-        height: 70vh;
+        height: 100vh;
     }
     .learning_container{
         flex-wrap: wrap;
@@ -387,10 +388,17 @@
 }
 @media screen and (max-width:400px) {
     .learn_left h1{
+        margin-top: 20px;
         font-size: 25px;
     }
     .learning{
         padding: 0 10px;
+    }
+    .media_box_first{
+        padding: 0;
+    }
+    .media_box_first p{
+        width: 100%;
     }
 }
 
@@ -456,10 +464,34 @@
     height: 35vh;
     transform: translateX(-70px);
 }
+@media screen and (max-width:1200px) {
+    .media{
+        min-height: 100vh;
+        padding: 0;
+    }
+}
 @media screen and (max-width:1000px) {
     .second_video{
         height: 40vh;
         transform: translateX(-20px);
+    }
+}
+@media screen and (max-width:980px) {
+    .media{
+        min-height: 90vh;
+    }
+}
+@media screen and (max-width:880px) {
+    .media_box{
+        flex-wrap: wrap;
+        padding: 0 20px;
+    }
+    .media_video_first{
+        width: 100%;
+    }
+    .media_text{
+        transform: translateY(-40px);
+        width: 100%;
     }
 }
 @media screen and (max-width:800px) {
@@ -470,7 +502,26 @@
     }
     
 }
-
+@media screen and (max-width:500px) {
+    .media_text h1{
+        font-size: 25px;
+    }
+}
+@media screen and (max-width:410px) {
+    .media_text h1{
+        font-size: 20px;
+    }
+}
+@media screen and (max-width:370px) {
+    .media_text{
+        transform: translateY(0px);
+    }
+}
+@media screen and (max-width:350px) {
+    .media_box{
+        padding: 0 10px;
+    }
+}
 /* business */
 
 .business{
@@ -685,6 +736,7 @@
     font-size: 18px;
     margin-bottom: 30px;
 }
+
 /* map */
 .map{
     width: 100%;
@@ -1111,4 +1163,20 @@
     overflow-x: auto; 
     -webkit-overflow-scrolling: touch;
   }
+}
+@media screen and (max-width:800px) {
+    /* .vles{
+        .
+    } */
+    .vles iframe{
+        margin-top: 20px;
+    }
+    .medi p{
+        width: 100%;
+    }
+}
+@media screen and (max-width:350px) {
+    .medi{
+        transform: translateY(-20px);
+    }
 }

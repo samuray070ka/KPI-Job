@@ -43,7 +43,6 @@ function Navbar() {
           </a>
         </ul>
 
-        {/* 🔽 Til tanlash — DROPDOWN */}
         <div className="lang-switcher">
           <select value={lang} onChange={(e) => switchLang(e.target.value)} className="lang-dropdown">
             <option value="uz">UZ</option>
