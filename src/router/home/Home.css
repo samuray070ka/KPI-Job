@@ -1251,6 +1251,18 @@
     font-weight: 500;
     margin-left: 20px;
     cursor: pointer;
+    transition: .28s;
+}
+.div_btn:hover{
+    background-color: transparent;
+    color: #1e3a8a;
+    border: 1px solid #1e3a8a;
+}
+.div_btn:active{
+    background-color: #1e3a8a;
+    color: #fff;
+    border: none;
+    transform: scale(.9);
 }
 .div_hr{
     margin-bottom: 20px;

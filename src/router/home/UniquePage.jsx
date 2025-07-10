@@ -43,10 +43,6 @@ function UniquePage() {
                 <p className='image_box_p'><strong><MdLocationPin /></strong> {job.type}</p>
             </div>
         </div>
-
-      {/* <hr style={{ margin: '20px 0' }} /> */}
-
-     
     </div>
     <div className="div container">
         <h3>Job details</h3>
