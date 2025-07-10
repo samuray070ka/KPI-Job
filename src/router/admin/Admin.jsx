@@ -138,7 +138,7 @@ function AdminPage() {
                       <tr key={`${key}-${langKey}`}>
                         <td>{key}</td>
                         <td>{langKey.toUpperCase()}</td>
-                        <td>
+                        <td className='td'>
                           <input
                             className="sa"
                             type="text"
@@ -162,7 +162,7 @@ function AdminPage() {
                     <tr key={key}>
                       <td>{key}</td>
                       <td>-</td>
-                      <td>
+                      <td className='td'>
                         <input
                           className="sa"
                           type={key.toLowerCase().includes('number') ? 'number' : 'text'}
