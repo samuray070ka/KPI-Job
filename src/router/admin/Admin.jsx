@@ -103,72 +103,105 @@ function AdminPage() {
 };
 
 
- const renderSection = () => {
+const renderSection = () => {
   if (section === 'view-all') return <AllDataViewer />;
-  else return (
+
+  const currentData = endpoints[section].data;
+  const setCurrentData = endpoints[section].setData;
+
+  return (
     <form className="admin-form" onSubmit={handleSubmit}>
       <h2>{sectionLabels[section]} qo'shish</h2>
-      {Object.entries(endpoints[section].data).map(([key, value]) => {
-        if (key === 'imageFile') {
-          return (
-            <input
-              key={key}
-              type="file"
-              accept="image/*"
-              onChange={(e) =>
-                endpoints[section].setData({
-                  ...endpoints[section].data,
-                  imageFile: e.target.files[0],
-                })
+
+      <div className="table-container">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Language</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries(currentData).map(([key, value]) => {
+              if (key === 'imageFile') {
+                return (
+                  <tr key={key}>
+                    <td>{key}</td>
+                    <td>-</td>
+                    <td>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          setCurrentData({
+                            ...currentData,
+                            imageFile: e.target.files[0],
+                          })
+                        }
+                      />
+                    </td>
+                  </tr>
+                );
               }
-            />
-          );
-        }
 
-        if (typeof value === 'object') {
-          return Object.keys(value).map((lang) => (
-            <input
-              className="sa"
-              key={`${key}-${lang}`}
-              type="text"
-              placeholder={`${key} [${lang}]`}
-              value={value[lang]}
-              onChange={(e) =>
-                endpoints[section].setData({
-                  ...endpoints[section].data,
-                  [key]: {
-                    ...endpoints[section].data[key],
-                    [lang]: e.target.value,
-                  },
-                })
+              if (typeof value === 'object') {
+                return Object.entries(value).map(([lang, val]) => (
+                  <tr key={`${key}-${lang}`}>
+                    <td>{key}</td>
+                    <td>{lang.toUpperCase()}</td>
+                    <td>
+                      <input
+                        className="sa"
+                        type="text"
+                        value={val}
+                        placeholder={`${key} [${lang}]`}
+                        onChange={(e) =>
+                          setCurrentData({
+                            ...currentData,
+                            [key]: {
+                              ...currentData[key],
+                              [lang]: e.target.value,
+                            },
+                          })
+                        }
+                      />
+                    </td>
+                  </tr>
+                ));
               }
-            />
-          ));
-        }
 
-        const type = key.toLowerCase().includes('number') ? 'number' : 'text';
+              return (
+                <tr key={key}>
+                  <td>{key}</td>
+                  <td>-</td>
+                  <td>
+                    <input
+                      className="sa"
+                      type={key.toLowerCase().includes('number') ? 'number' : 'text'}
+                      value={value}
+                      placeholder={key}
+                      onChange={(e) =>
+                        setCurrentData({
+                          ...currentData,
+                          [key]: e.target.value,
+                        })
+                      }
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-        return (
-          <input
-            className="sa"
-            key={key}
-            type={type}
-            placeholder={key}
-            value={value}
-            onChange={(e) =>
-              endpoints[section].setData({
-                ...endpoints[section].data,
-                [key]: e.target.value,
-              })
-            }
-          />
-        );
-      })}
-
-      <button type="submit">Yuborish</button>
+      <button type="submit" style={{ marginTop: "20px" }}>Yuborish</button>
     </form>
   );
 };
+
+
 
 
   return (

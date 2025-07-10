@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import "./Admin.css";
 
-// Har bir bo'lim uchun ko'rsatiladigan nomlar
 const sectionLabels = {
   results: "Holded in numbers",
   story: "Our story",
@@ -13,7 +12,6 @@ const sectionLabels = {
 };
 
 function AllDataViewer() {
-  // Memo orqali sections ni qayta hisoblanishini oldini olamiz
   const sections = useMemo(() => Object.keys(sectionLabels), []);
   const [allData, setAllData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -35,72 +33,56 @@ function AllDataViewer() {
     }
 
     fetchAll();
-  }, [sections]); // useMemo tufayli bu qiymat hech qachon o'zgarmaydi
+  }, [sections]);
 
   if (loading) return <p>Yuklanmoqda...</p>;
 
   return (
-    <div className="card-grid">
+    <div className="admin-tables">
       {sections.map((sec) => (
         <div key={sec}>
           <h2 className="section-stitle">{sectionLabels[sec]}</h2>
-          {(allData[sec] || []).map((item, i) => (
-            <div key={item._id || i} className="admin-card">
-              <h3>
-                Title:{" "}
-                {item.label?.uz ||
-                  item.title?.uz ||
-                  item.department ||
-                  `Item ${i + 1}`}
-              </h3>
-
-              {item.number && (
-                <p>
-                  <strong>Number:</strong> {item.number}
-                </p>
-              )}
-              {item.year && (
-                <p>
-                  <strong>Year:</strong> {item.year}
-                </p>
-              )}
-              {item.type && (
-                <p>
-                  <strong>Type:</strong> {item.type}
-                </p>
-              )}
-              {item.location && (
-                <p>
-                  <strong>Location:</strong> {item.location}
-                </p>
-              )}
-              {item.description?.uz && (
-                <p>
-                  <strong>Description:</strong> {item.description.uz}
-                </p>
-              )}
-
-              {item.imageUrl && (
-                <img
-                  src={item.imageUrl}
-                  alt={
-                    item.label?.uz ||
-                    item.title?.uz ||
-                    item.department ||
-                    `Item ${i + 1}`
-                  }
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    marginTop: "10px",
-                  }}
-                  />
-              )}
-
-              <button className="edit">Tahrirlash</button>
-              <button className="delete">O'chirish</button>
-            </div>
-          ))}
+          <div className="table-container">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Number</th>
+                  <th>Year</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Description</th>
+                  <th>Image</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(allData[sec] || []).map((item, i) => (
+                  <tr key={item._id || i}>
+                    <td>{i + 1}</td>
+                    <td>{item.label?.uz || item.title?.uz || item.department || '-'}</td>
+                    <td>{item.number || '-'}</td>
+                    <td>{item.year || '-'}</td>
+                    <td>{item.type || '-'}</td>
+                    <td>{item.location || '-'}</td>
+                    <td>{item.description?.uz || '-'}</td>
+                    <td>
+                      {item.imageUrl ? (
+                        <img src={item.imageUrl} alt="preview" style={{ width: "60px", height: "auto" }} />
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                    <td>
+                      <button className="edit">Tahrirlash</button>
+                      <button className="delete">O'chirish</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       ))}
     </div>
