@@ -6,6 +6,7 @@ import { PiInstagramLogoFill } from "react-icons/pi";
 import { FaYoutube } from "react-icons/fa6";
 import { HiMiniBars3 } from "react-icons/hi2";
 import { useLang } from '../LanguageContext.jsx';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,9 @@ function Navbar() {
   return (
     <div className='navbar'>
       <div className='container navbar_container'>
-        <img className='navbar_logo' src={logo} alt="Logo" />
+        <Link className='link' to={'/'}>
+          <img className='navbar_logo' src={logo} alt="Logo" />
+        </Link>
         <h1 className="flex"> </h1>
         <ul className={`navbar_collaction ${isOpen ? 'open' : ''}`}>
           <a className='navbar_item link one' onClick={() => setIsOpen(false)} href="#jobs">

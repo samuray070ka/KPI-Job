@@ -4,6 +4,7 @@ import homeImageFirst from '../../assets/CEbZrJcVt13J.webp';
 import homeImageSecond from '../../assets/MSuhC8ollm9F.webp';
 import { FaCheck } from "react-icons/fa6";
 import { useLang } from '../../LanguageContext.jsx'; 
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [results, setResults] = useState([]);
@@ -238,16 +239,22 @@ function Home() {
           ))}
         </div>
         <div className="jobs-grid">
-          {selectedJobs.map((job, index) => (
-            <div key={index} className="job-card">
-              <h3 className="job-title">{job.title}</h3>
-              <div className="job-details">
-                <span>🏠 {job.type}</span>
-                <span>📍 {job.location}</span>
-              </div>
-              <button className="view-job-btn">View job</button>
-            </div>
-          ))}
+         {selectedJobs.map((job, index) => {
+            const slug = job.title.toLowerCase().replace(/\s+/g, '-');
+            return (
+              <Link className='link' to={`/job/${slug}`} key={index}>
+                <div className="job-card">
+                  <h3 className="job-title">{job.title}</h3>
+                  <div className="job-details">
+                    <span>🏠 {job.type}</span>
+                    <span>📍 {job.location}</span>
+                  </div>
+                  <button className="view-job-btn">View job</button>
+                </div>
+              </Link>
+            );
+          })}
+
         </div>
       </div>
 

@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './router/home/Home';
 import Admin from './router/admin/Admin'
 import { LanguageProvider } from './LanguageContext.jsx';
+import UniquePage from './router/home/UniquePage.jsx';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} /> 
         <Route path='/admin' element={<Admin />} /> 
+        <Route path="/job/:slug" element={<UniquePage/>} />
       </Routes>
       
       {!isAdmin && <Footer />}

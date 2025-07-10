@@ -1194,3 +1194,64 @@
         height: 100vh;
     }
 }
+.image{
+    background: url("../../assets/ChatGPT\ Image\ Jul\ 10\,\ 2025\,\ 03_11_42\ PM.png") no-repeat center;
+    width: 100%;
+    /* margin-top: 20px; */
+    margin-bottom: 20px;
+}
+.job-detail-page{
+    padding-left: 150px;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+}
+.job-detail-page h1{
+    font-size: 45px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.job-detail-page p{
+    font-size: 20px;
+    font-weight: 100;
+}
+.image_box{
+    width: 100%;
+    display: flex;
+}
+.image_box_p strong{
+    margin-left: 20px;
+}
+.div{
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 10px; */
+}
+.div h3{
+    font-size: 22px;
+    width: 130px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 100;
+    border-bottom: 1.5px solid #000;
+}
+.div_btn{
+    width: 80px;
+    height: 40px;
+    background-color: #1e3a8a;
+    color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 20px;
+    cursor: pointer;
+}
+.div_hr{
+    margin-bottom: 20px;
+}
