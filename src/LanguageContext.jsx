@@ -1,17 +1,24 @@
-import { createContext, useState, useContext } from 'react';
+// LanguageContext.jsx
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const LanguageContext = createContext();
 
-export const LanguageProvider = ({ children }) => {
-  const [lang, setLang] = useState('uz');
+export function LanguageProvider({ children }) {
+  const [lang, setLang] = useState(() => {
+    return localStorage.getItem('lang') || 'uz';
+  });
 
-  const switchLang = (newLang) => setLang(newLang);
+  useEffect(() => {
+    localStorage.setItem('lang', lang);
+  }, [lang]);
 
   return (
-    <LanguageContext.Provider value={{ lang, switchLang }}>
+    <LanguageContext.Provider value={{ lang, switchLang: setLang }}>
       {children}
     </LanguageContext.Provider>
   );
-};
+}
 
-export const useLang = () => useContext(LanguageContext);
+export function useLang() {
+  return useContext(LanguageContext);
+}

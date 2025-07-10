@@ -1,18 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import "./Admin.css";
 
-const sectionLabels = {
-  results: "Holded in numbers",
-  story: "Our story",
-  values: "Our values",
-  jobs: "Open positions",
-  perks: "Perks and benefits",
-  work: "Love your work",
-  location: "Location",
-};
-
-function AllDataViewer() {
-  const sections = useMemo(() => Object.keys(sectionLabels), []);
+function AllDataViewer({ lang = 'uz', t }) {
+  const sectionLabels = t.sections;
+  const sections = useMemo(() => Object.keys(sectionLabels || {}), [sectionLabels]);
   const [allData, setAllData] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +15,7 @@ function AllDataViewer() {
           const res = await fetch(`http://localhost:5000/home/${section}`);
           const data = await res.json();
           temp[section] = data;
-        } catch (err) {
+        } catch {
           temp[section] = [];
         }
       }
@@ -35,7 +26,7 @@ function AllDataViewer() {
     fetchAll();
   }, [sections]);
 
-  if (loading) return <p>Yuklanmoqda...</p>;
+  if (loading) return <p>{t?.loading || "Yuklanmoqda..."}</p>;
 
   return (
     <div className="admin-tables">
@@ -47,36 +38,36 @@ function AllDataViewer() {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Title</th>
-                  <th>Number</th>
-                  <th>Year</th>
-                  <th>Type</th>
-                  <th>Location</th>
-                  <th>Description</th>
-                  <th>Image</th>
-                  <th>Actions</th>
+                  <th>{t?.title || "Title"}</th>
+                  <th>{t?.number || "Number"}</th>
+                  <th>{t?.year || "Year"}</th>
+                  <th>{t?.type || "Type"}</th>
+                  <th>{t?.location || "Location"}</th>
+                  <th>{t?.description || "Description"}</th>
+                  <th>{t?.image || "Image"}</th>
+                  <th>{t?.actions || "Actions"}</th>
                 </tr>
               </thead>
               <tbody>
                 {(allData[sec] || []).map((item, i) => (
                   <tr key={item._id || i}>
                     <td>{i + 1}</td>
-                    <td>{item.label?.uz || item.title?.uz || item.department || '-'}</td>
+                    <td>{item.label?.[lang] || item.title?.[lang] || item.department || '-'}</td>
                     <td>{item.number || '-'}</td>
                     <td>{item.year || '-'}</td>
                     <td>{item.type || '-'}</td>
                     <td>{item.location || '-'}</td>
-                    <td>{item.description?.uz || '-'}</td>
+                    <td>{item.description?.[lang] || '-'}</td>
                     <td>
                       {item.imageUrl ? (
-                        <img src={item.imageUrl} alt="preview" style={{ width: "60px", height: "auto" }} />
+                        <img src={item.imageUrl} alt="preview" style={{ width: "60px" }} />
                       ) : (
                         "-"
                       )}
                     </td>
                     <td>
-                      <button className="edit">Tahrirlash</button>
-                      <button className="delete">O'chirish</button>
+                      <button className="edit">{t?.edit || "Edit"}</button>
+                      <button className="delete">{t?.delete || "Delete"}</button>
                     </td>
                   </tr>
                 ))}

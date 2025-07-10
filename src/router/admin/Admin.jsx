@@ -1,24 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Admin.css';
 import AllDataViewer from './AllDataViewer';
+import translations from './i18n';
 
 function AdminPage() {
-  const sectionLabels = {
-  results: 'Holded in numbers',
-  story: 'Our story',
-  values: 'Our values',
-  jobs: 'Open positions',
-  perks: 'Perks and benefits',
-  work: 'Love your work',
-  location: 'Location',
-  'view-all': "Previous information",
-};
-
   const [section, setSection] = useState('results');
+  const [lang, setLang] = useState(localStorage.getItem('adminLang') || 'uz');
+  const t = translations[lang] || translations.uz;
+  const sectionLabels = t.sections;
+
+  useEffect(() => {
+    localStorage.setItem('adminLang', lang);
+  }, [lang]);
 
   const [result, setResult] = useState({ number: '', label: { uz: '', ru: '', en: '' } });
-  const [story, setStory] = useState({ description: { uz: '', ru: '', en: '' }, year: ''});
-  const [value, setValue] = useState({ title: { uz: '', ru: '', en: '' }, description: { uz: '', ru: '', en: '' }, icon: '' });
+  const [story, setStory] = useState({ description: { uz: '', ru: '', en: '' }, year: '' });
+  const [value, setValue] = useState({ title: { uz: '', ru: '', en: '' }, description: { uz: '', ru: '', en: '' } });
   const [job, setJob] = useState({ department: '', title: '', type: '', location: '' });
   const [perk, setPerk] = useState({ label: { uz: '', ru: '', en: '' } });
   const [work, setWork] = useState({ imageFile: null });
@@ -38,178 +35,172 @@ function AdminPage() {
     location: { url: '/location', data: location, setData: setLocation },
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  const current = endpoints[section];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const current = endpoints[section];
 
-  const hasEmptyFields = (obj) => {
-    for (let key in obj) {
-      const value = obj[key];
-      if (typeof value === 'object' && value !== null) {
-        for (let subKey in value) {
-          if (value[subKey] === '') {
-            return true; 
+    const hasEmptyFields = (obj) => {
+      for (let key in obj) {
+        const value = obj[key];
+        if (typeof value === 'object' && value !== null) {
+          for (let subKey in value) {
+            if (value[subKey] === '') return true;
           }
-        }
-      } else {
-        if (value === '' || value === null) {
-          return true; 
+        } else {
+          if (value === '' || value === null) return true;
         }
       }
+      return false;
+    };
+
+    if (hasEmptyFields(current.data)) {
+      alert(`❌ ${t.fillAll}`);
+      return;
     }
-    return false; 
+
+    const res = await fetch(`http://localhost:5000/home${current.url}`, {
+      method: 'POST',
+      headers: section === 'work' ? {} : { 'Content-Type': 'application/json' },
+      body: section === 'work'
+        ? (() => {
+            const formData = new FormData();
+            formData.append('image', current.data.imageFile);
+            return formData;
+          })()
+        : JSON.stringify(current.data),
+    });
+
+    const resultData = await res.json();
+
+    if (!res.ok) {
+      alert(`❌ ${t.error}: ${resultData.message}`);
+      return;
+    }
+
+    alert(`✅ ${sectionLabels[section]} ${t.success}`);
+
+    // Reset form
+    const resetObj = {};
+    for (let key in current.data) {
+      if (key === 'imageFile') resetObj[key] = null;
+      else if (typeof current.data[key] === 'object') {
+        const sub = {};
+        for (let subKey in current.data[key]) sub[subKey] = '';
+        resetObj[key] = sub;
+      } else resetObj[key] = '';
+    }
+    current.setData(resetObj);
   };
 
-  if (hasEmptyFields(current.data)) {
-    alert("❌ Iltimos, barcha maydonlarni to‘ldiring!");
-    return;
-  }
-
-  const res = await fetch(`http://localhost:5000/home${current.url}`, {
-    method: 'POST',
-    headers: section === 'work' ? {} : { 'Content-Type': 'application/json' },
-    body: section === 'work'
-      ? (() => {
-          const formData = new FormData();
-          formData.append('image', current.data.imageFile);
-          return formData;
-        })()
-      : JSON.stringify(current.data),
-  });
-
-  const resultData = await res.json();
-
-  if (!res.ok) {
-    alert(`❌ Xatolik: ${resultData.message}`);
-    return;
-  }
-
-  alert(`✅ ${sectionLabels[section]} muvaffaqiyatli qo'shildi!`);
-
-  const resetObj = {};
-  for (let key in current.data) {
-    if (key === 'imageFile') resetObj[key] = null;
-    else if (typeof current.data[key] === 'object') {
-      const sub = {};
-      for (let subKey in current.data[key]) {
-        sub[subKey] = '';
-      }
-      resetObj[key] = sub;
-    } else {
-      resetObj[key] = '';
+  const renderSection = () => {
+    if (section === 'view-all') {
+      return <AllDataViewer lang={lang} t={t} sectionLabels={sectionLabels} />;
     }
-  }
-  current.setData(resetObj);
-};
 
+    const currentData = endpoints[section].data;
+    const setCurrentData = endpoints[section].setData;
 
-const renderSection = () => {
-  if (section === 'view-all') return <AllDataViewer />;
-
-  const currentData = endpoints[section].data;
-  const setCurrentData = endpoints[section].setData;
-
-  return (
-    <div className='admin'>
-    <form className="admin-form" onSubmit={handleSubmit}>
-      <h2>{sectionLabels[section]} qo'shish</h2>
-
-      <div className="table-container">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Field</th>
-              <th>Language</th>
-              <th>Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.entries(currentData).map(([key, value]) => {
-              if (key === 'imageFile') {
-                return (
-                  <tr key={key}>
-                    <td>{key}</td>
-                    <td>-</td>
-                    <td>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) =>
-                          setCurrentData({
-                            ...currentData,
-                            imageFile: e.target.files[0],
-                          })
-                        }
-                        />
-                    </td>
-                  </tr>
-                );
-              }
-
-              if (typeof value === 'object') {
-                return Object.entries(value).map(([lang, val]) => (
-                  <tr key={`${key}-${lang}`}>
-                    <td>{key}</td>
-                    <td>{lang.toUpperCase()}</td>
-                    <td>
-                      <input
-                        className="sa"
-                        type="text"
-                        value={val}
-                        placeholder={`${key} [${lang}]`}
-                        onChange={(e) =>
-                          setCurrentData({
-                            ...currentData,
-                            [key]: {
-                              ...currentData[key],
-                              [lang]: e.target.value,
-                            },
-                          })
-                        }
-                      />
-                    </td>
-                  </tr>
-                ));
-              }
-
-              return (
-                <tr key={key}>
-                  <td>{key}</td>
-                  <td>-</td>
-                  <td>
-                    <input
-                      className="sa"
-                      type={key.toLowerCase().includes('number') ? 'number' : 'text'}
-                      value={value}
-                      placeholder={key}
-                      onChange={(e) =>
-                        setCurrentData({
-                          ...currentData,
-                          [key]: e.target.value,
-                        })
-                      }
-                      />
-                  </td>
+    return (
+      <div className="admin">
+        <form className="admin-form" onSubmit={handleSubmit}>
+          <h2>{sectionLabels[section]} {t.add}</h2>
+          <div className="table-container">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>{t.field}</th>
+                  <th>{t.language}</th>
+                  <th>{t.value}</th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {Object.entries(currentData).map(([key, value]) => {
+                  if (key === 'imageFile') {
+                    return (
+                      <tr key={key}>
+                        <td>{key}</td>
+                        <td>-</td>
+                        <td>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                              setCurrentData({ ...currentData, imageFile: e.target.files[0] })
+                            }
+                          />
+                        </td>
+                      </tr>
+                    );
+                  }
+
+                  if (typeof value === 'object') {
+                    return Object.entries(value).map(([langKey, val]) => (
+                      <tr key={`${key}-${langKey}`}>
+                        <td>{key}</td>
+                        <td>{langKey.toUpperCase()}</td>
+                        <td>
+                          <input
+                            className="sa"
+                            type="text"
+                            value={val}
+                            onChange={(e) =>
+                              setCurrentData({
+                                ...currentData,
+                                [key]: {
+                                  ...currentData[key],
+                                  [langKey]: e.target.value,
+                                },
+                              })
+                            }
+                          />
+                        </td>
+                      </tr>
+                    ));
+                  }
+
+                  return (
+                    <tr key={key}>
+                      <td>{key}</td>
+                      <td>-</td>
+                      <td>
+                        <input
+                          className="sa"
+                          type={key.toLowerCase().includes('number') ? 'number' : 'text'}
+                          value={value}
+                          onChange={(e) =>
+                            setCurrentData({ ...currentData, [key]: e.target.value })
+                          }
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <button type="submit" className="btn_send">{t.submit}</button>
+        </form>
       </div>
-
-      <button type="submit" style={{ marginTop: "20px" }}>Yuborish</button>
-    </form>
-              </div>
-  );
-};
-
-
-
+    );
+  };
 
   return (
     <div className="admin-layout">
       <div className="admin-sidebar">
         <h2>Admin</h2>
+        <div style={{ marginBottom: "20px" }}>
+          <select
+            id="lang-select"
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+            className="lang-dropdown"
+          >
+            <option value="uz">O'zbekcha</option>
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
         {Object.keys(endpoints).map((key) => (
           <button
             key={key}
@@ -226,7 +217,6 @@ const renderSection = () => {
           {sectionLabels['view-all']}
         </button>
       </div>
-
       <div className="admin-content">{renderSection()}</div>
     </div>
   );
