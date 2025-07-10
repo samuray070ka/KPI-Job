@@ -110,6 +110,7 @@ const renderSection = () => {
   const setCurrentData = endpoints[section].setData;
 
   return (
+    <div className='admin'>
     <form className="admin-form" onSubmit={handleSubmit}>
       <h2>{sectionLabels[section]} qo'shish</h2>
 
@@ -139,7 +140,7 @@ const renderSection = () => {
                             imageFile: e.target.files[0],
                           })
                         }
-                      />
+                        />
                     </td>
                   </tr>
                 );
@@ -187,7 +188,7 @@ const renderSection = () => {
                           [key]: e.target.value,
                         })
                       }
-                    />
+                      />
                   </td>
                 </tr>
               );
@@ -198,6 +199,7 @@ const renderSection = () => {
 
       <button type="submit" style={{ marginTop: "20px" }}>Yuborish</button>
     </form>
+              </div>
   );
 };
 

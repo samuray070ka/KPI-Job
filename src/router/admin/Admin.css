@@ -195,7 +195,12 @@
   color: rgb(255, 36, 80);
   border: 1px solid rgb(255, 36, 80);
 }
-
+.admin{
+  width: 100%;
+}
+.admin form{
+  max-width: 200%;
+}
 /* Table styles */
 .admin-tables {
   margin-top: 20px;
