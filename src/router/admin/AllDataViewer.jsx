@@ -7,6 +7,10 @@ function AllDataViewer({ lang = 'uz', t }) {
   const [allData, setAllData] = useState({});
   const [loading, setLoading] = useState(true);
 
+  const [editingItem, setEditingItem] = useState(null); 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentSection, setCurrentSection] = useState(null);
+
   useEffect(() => {
     async function fetchAll() {
       const temp = {};
@@ -25,6 +29,57 @@ function AllDataViewer({ lang = 'uz', t }) {
 
     fetchAll();
   }, [sections]);
+
+  const handleEdit = (item, section) => {
+    setEditingItem({ ...item });
+    setCurrentSection(section);
+    setModalVisible(true);
+  };
+
+  const handleSave = async () => {
+    try {
+      const res = await fetch(`http://localhost:5000/home/${currentSection}/${editingItem._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingItem),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ Ma'lumot yangilandi");
+        setModalVisible(false);
+        setEditingItem(null);
+        const updatedData = allData[currentSection].map((d) =>
+          d._id === editingItem._id ? editingItem : d
+        );
+        setAllData({ ...allData, [currentSection]: updatedData });
+      } else {
+        alert(`❌ ${data.message || 'Xatolik'}`);
+      }
+    } catch (error) {
+      alert("❌ Xatolik yuz berdi");
+    }
+  };
+
+  const handleDelete = async (itemId, section) => {
+  if (!window.confirm("O'chirishga ishonchingiz komilmi?")) return;
+
+  try {
+    const res = await fetch(`http://localhost:5000/home/${section}/${itemId}`, {
+      method: "DELETE",
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert("✅ O'chirildi");
+      const updatedData = allData[section].filter((d) => d._id !== itemId);
+      setAllData({ ...allData, [section]: updatedData });
+    } else {
+      alert(`❌ ${data.message || "Xatolik yuz berdi"}`);
+    }
+  } catch (err) {
+    alert("❌ O'chirishda xatolik yuz berdi");
+  }
+};
+
 
   if (loading) return <p>{t?.loading || "Yuklanmoqda..."}</p>;
 
@@ -66,8 +121,11 @@ function AllDataViewer({ lang = 'uz', t }) {
                       )}
                     </td>
                     <td>
-                      <button className="edit">{t?.edit || "Edit"}</button>
-                      <button className="delete">{t?.delete || "Delete"}</button>
+                      <button className="edit" onClick={() => handleEdit(item, sec)}>{t?.edit || "Edit"}</button>
+                      <button className="delete" onClick={() => handleDelete(item._id, sec)}>
+                        {t?.delete || "Delete"}
+                      </button>
+
                     </td>
                   </tr>
                 ))}
@@ -76,6 +134,63 @@ function AllDataViewer({ lang = 'uz', t }) {
           </div>
         </div>
       ))}
+
+      {/* Modal */}
+      {modalVisible && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Edit {sectionLabels[currentSection]}</h3>
+            <table className="admin-table">
+              <tbody>
+                {Object.entries(editingItem)
+                  .filter(([key]) => !['_id', '__v', 'createdAt', 'updatedAt', 'icon'].includes(key))
+                  .map(([key, val]) => {
+                    if (typeof val === 'object' && val !== null) {
+                      return Object.entries(val).map(([langKey, subVal]) => (
+                        <tr key={`${key}-${langKey}`}>
+                          <td>{key}</td>
+                          <td>{langKey.toUpperCase()}</td>
+                          <td>
+                            <input
+                              value={subVal || ''}
+                              onChange={(e) =>
+                                setEditingItem({
+                                  ...editingItem,
+                                  [key]: {
+                                    ...editingItem[key],
+                                    [langKey]: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </td>
+                        </tr>
+                      ));
+                    }
+                    return (
+                      <tr key={key}>
+                        <td>{key}</td>
+                        <td>-</td>
+                        <td>
+                          <input
+                            value={val || ''}
+                            onChange={(e) =>
+                              setEditingItem({ ...editingItem, [key]: e.target.value })
+                            }
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+            <div className="modal-actions">
+              <button onClick={handleSave} className="save">{t?.submit || "Save"}</button>
+              <button onClick={() => setModalVisible(false)} className="cancel">Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
