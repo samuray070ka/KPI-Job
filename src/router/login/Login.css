@@ -68,3 +68,26 @@
     color: #fff;
     border: none;
 }
+@media screen and (max-width: 850px ) {
+    .login{
+        flex-wrap: wrap;
+    }
+    .login_left{
+        height: 70vh;
+        width: 100%;
+    }
+    .login_right{
+        height: 70vh;
+        width: 100%;
+    }
+    .login_form{
+        /* border: 1px solid red; */
+        height: 50vh;
+    }
+}
+@media screen and (max-width:455px) {
+    .login_form{
+        padding: 0 20px;
+        width: 100%;
+    }
+}
