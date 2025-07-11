@@ -1,33 +1,54 @@
-import './App.css';
-import {Routes, Route, useLocation} from "react-router-dom";
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import { Routes, Route } from 'react-router-dom';
+import Login from './router/login/Login';
 import Home from './router/home/Home';
-import Admin from './router/admin/Admin'
-import { LanguageProvider } from './LanguageContext.jsx';
-import UniquePage from './router/home/UniquePage.jsx';
-import Login from './router/login/Login.jsx';
-
+import Admin from './router/admin/Admin';
+import NotAuthorized from './NotAuthorized';
+import ProtectedRoute from './router/login/ProtectedRoute';
+import UniquePage from './router/home/UniquePage';
+import { LanguageProvider } from './LanguageContext';
+import NotFound from "./NotFound";
+import Layout from "./Layout"; // <-- yangi
 
 function App() {
-  const location = useLocation();
-  const isAdmin = location.pathname.startsWith("/admin");
-  const isLogin = location.pathname.startsWith("/login");
   return (
-    <div className="App">
-      <LanguageProvider>
-       {!isAdmin && !isLogin && <Navbar />}
-
+    <LanguageProvider>
       <Routes>
-        <Route path='/' element={<Home />} /> 
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/admin' element={<Admin />} /> 
-        <Route path="/job/:slug" element={<UniquePage/>} />
+        {/* Public route */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/not-authorized" element={<NotAuthorized />} />
+
+        {/* Routes with layout (Navbar + Footer) */}
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <ProtectedRoute role={["user", "admin"]}>
+                <Home />
+              </ProtectedRoute>
+            </Layout>
+          }
+        />
+        <Route
+          path="/job/:slug"
+          element={
+            <Layout>
+              <UniquePage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute role="admin">
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Not found route */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
-      
-      {!isAdmin && !isLogin && <Footer />}
-      </LanguageProvider>
-    </div>
+    </LanguageProvider>
   );
 }
 
