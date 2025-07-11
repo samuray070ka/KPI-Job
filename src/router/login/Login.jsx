@@ -35,7 +35,7 @@ function Login() {
       if (data.role === 'admin') {
         navigate("/admin");
       } else if (data.role === 'user') {
-        navigate("/home");
+        navigate("/");
       }
 
     } catch (err) {
