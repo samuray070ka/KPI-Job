@@ -9,7 +9,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background: radial-gradient(circle at top left, #1e3a8a, #3b82f6, #1e3a8a); */
     background-blend-mode: overlay;
     filter: drop-shadow(0 0 5px white)
 }
