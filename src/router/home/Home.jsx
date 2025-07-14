@@ -54,10 +54,11 @@ function Home() {
   useEffect(() => {
     const deptGrouped = {};
     jobsRawData.forEach(job => {
-      if (!deptGrouped[job.department]) {
-        deptGrouped[job.department] = [];
+      const normalizedDept = job.department.charAt(0).toUpperCase() + job.department.slice(1).toLowerCase();
+      if (!deptGrouped[normalizedDept]) {
+        deptGrouped[normalizedDept] = [];
       }
-      deptGrouped[job.department].push(job);
+      deptGrouped[normalizedDept].push(job);
     });
 
     const groupedJobs = Object.keys(deptGrouped).map(dept => ({
