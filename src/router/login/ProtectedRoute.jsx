@@ -8,7 +8,6 @@ function ProtectedRoute({ role: allowedRoles, children }) {
     return <Navigate to="/login" />;
   }
 
-  // allowedRoles endi array bo'lsa ishlaydi
   const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
 
   if (!roles.includes(userRole)) {

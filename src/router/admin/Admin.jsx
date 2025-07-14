@@ -79,7 +79,6 @@ function AdminPage() {
 
     alert(`✅ ${sectionLabels[section]} ${t.success}`);
 
-    // Reset form
     const resetObj = {};
     for (let key in current.data) {
       if (key === 'imageFile') resetObj[key] = null;

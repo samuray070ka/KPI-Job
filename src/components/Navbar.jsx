@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false); // til tanlash ochilishi
+  const [langOpen, setLangOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleLang = () => setLangOpen(!langOpen);

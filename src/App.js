@@ -7,17 +7,15 @@ import ProtectedRoute from './router/login/ProtectedRoute';
 import UniquePage from './router/home/UniquePage';
 import { LanguageProvider } from './LanguageContext';
 import NotFound from "./NotFound";
-import Layout from "./Layout"; // <-- yangi
+import Layout from "./Layout";
 
 function App() {
   return (
     <LanguageProvider>
       <Routes>
-        {/* Public route */}
         <Route path="/login" element={<Login />} />
         <Route path="/not-authorized" element={<NotAuthorized />} />
 
-        {/* Routes with layout (Navbar + Footer) */}
         <Route
           path="/"
           element={
@@ -45,7 +43,6 @@ function App() {
           }
         />
 
-        {/* Not found route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </LanguageProvider>

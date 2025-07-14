@@ -133,8 +133,6 @@ function Home() {
   };
   return (
     <div className='home'>
-
-      {/* Banner */}
       <div className="banner_first">
         <div className='box'>
           <h1 className='first_h1'>{t.banner[lang]}</h1>
@@ -144,7 +142,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Intro Text */}
       <div className="text_first">
         <h1 className='t_first_h1'>{t.join[lang]}</h1>
         <br />
@@ -153,7 +150,6 @@ function Home() {
         </h4>
       </div>
 
-      {/* Results */}
       <div className="results">
         <div className="container results_container">
           <h1 className='results_h1'>{t.result[lang]}</h1>
@@ -168,7 +164,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Story */}
       <div className="story">
         <div className='container story_container'>
           <div className="story_right">
@@ -186,7 +181,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Learning Section 1 */}
       <div className="learning">
         <div className="container learning_container first_vide">
           <div className='learn_left media_box_first'>
@@ -198,7 +192,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Our values */}
       <div id='culture' className="value">
         <div className="container value_container">
           <h1 className='value_h1'>{t.value[lang]}</h1>
@@ -215,7 +208,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Learning Section 2 */}
       <div className="learning second media">
         <div className="container learning_container media_box">
           <iframe className='second_video media_video_first' title="vimeo-player" frameBorder="0" src="https://player.vimeo.com/video/760228363?h=ef125459cb" width="640" height="360"></iframe>
@@ -226,7 +218,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Open Positions */}
       <div id='jobs' className="container jobs-wrapper">
         <h1>{t.job[lang]}</h1>
         <div className="departments-tabs">
@@ -258,7 +249,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Business Recruitment Process */}
       <div className="business">
         <div className="container business_container">
           <h1>{t.business[lang]}</h1>
@@ -266,7 +256,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Trust & Experience */}
       <div className="learning second ">
         <div className="container learning_container ">
           <div className='learn_left media_box_first '>
@@ -277,7 +266,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Engineering Recruitment Process */}
       <div className="business">
         <div className="container business_container">
           <h1>{t.business_second[lang]}</h1>
@@ -285,7 +273,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Perks */}
       <div id='perks' className="perks">
         <div className="container perks_container">
           <div className="perks_left">{t.perks[lang]}</div>
@@ -300,7 +287,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Barcelona section */}
       <div className="learning third fixed">
         <div className="container learning_container vles">
           <iframe className='first_video' title="vimeo-player" frameBorder="0" src="https://player.vimeo.com/video/757908715?h=52b05de5d9" width="640" height="360"></iframe>
@@ -311,7 +297,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Why Join Us */}
       <div className="join">
         <div className="container join_container">
           <h1>{t.why[lang]}</h1>
@@ -325,7 +310,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Work Images (from backend) */}
      <div className='work'>
         <h1>{t.work[lang]}</h1>
         <p>{t.work_text[lang]}</p>
@@ -336,7 +320,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Google Map from backend */}
        {locationData && (
         <div className="map">
           <div className='container map_container'>

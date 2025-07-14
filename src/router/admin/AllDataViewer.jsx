@@ -135,7 +135,6 @@ function AllDataViewer({ lang = 'uz', t }) {
         </div>
       ))}
 
-      {/* Modal */}
       {modalVisible && (
         <div className="modal-overlay">
           <div className="modal-content">
