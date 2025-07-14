@@ -1076,7 +1076,7 @@
 }
 
 .job-title {
-  color: #e63946;
+  color: #1e3a8a;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -1092,7 +1092,7 @@
 }
 
 .view-job-btn {
-  background-color: #e63946;
+  background-color: #1e3a8a;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -1102,7 +1102,7 @@
 }
 
 .view-job-btn:hover {
-  background-color: #c92434;
+  background-color: #1b3477;
 }
 @media screen and (max-width:350px) {
     .jobs-wrapper {
@@ -1154,13 +1154,13 @@
 }
 
 .tab-btn.active {
-  color: #e63946;
-  border-bottom: 1px solid #e63946;
+  color: #1e3a8a;
+  border-bottom: 1px solid #1e3a8a;
   font-weight: 600;
 }
 
 .tab-btn:hover {
-  color: #e63946;
+  color: #1b3477;
 }
 
 @media screen and (max-width:800px) {
