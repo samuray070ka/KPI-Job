@@ -5,6 +5,8 @@ import homeImageSecond from '../../assets/MSuhC8ollm9F.webp';
 import { FaCheck } from "react-icons/fa6";
 import { useLang } from '../../LanguageContext.jsx'; 
 import { Link } from 'react-router-dom';
+import { BiSolidBuildingHouse } from "react-icons/bi";
+import { MdLocationPin } from "react-icons/md";
 
 function Home() {
   const [results, setResults] = useState([]);
@@ -238,8 +240,8 @@ function Home() {
                 <div className="job-card">
                   <h3 className="job-title">{job.title}</h3>
                   <div className="job-details">
-                    <span>🏠 {job.type}</span>
-                    <span>📍 {job.location}</span>
+                    <span><BiSolidBuildingHouse className='color'/> {job.type}</span>
+                    <span><MdLocationPin className='color'/> {job.location}</span>
                   </div>
                   <button className="view-job-btn">View job</button>
                 </div>

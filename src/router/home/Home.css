@@ -1194,6 +1194,11 @@
         height: 100vh;
     }
 }
+.color{
+    color: #1e3a8a;
+    transform: translateY(3px);
+    font-size: 20px;
+}
 .image{
     background: url("../../assets/ChatGPT\ Image\ Jul\ 10\,\ 2025\,\ 03_11_42\ PM.png") no-repeat center;
     width: 100%;
