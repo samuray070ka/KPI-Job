@@ -284,3 +284,10 @@
   outline: none;
   cursor: pointer;
 }
+.lang-switcher {
+  user-select: none;
+}
+
+.lang-switcher:hover .lang-dropdown {
+  display: block;
+}
