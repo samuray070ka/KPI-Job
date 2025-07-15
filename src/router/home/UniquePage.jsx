@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { data, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useLang } from '../../LanguageContext.jsx';
 import './Home.css';
 import { BiSolidBuildingHouse } from "react-icons/bi";
