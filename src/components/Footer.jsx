@@ -1,13 +1,21 @@
 import React from 'react'
 import "./components.css"
-import footerLogo from '../assets/image-removebg-preview (1).png'
+import footerLogo from '../assets/cropped-favicon-1.png'
 
 function Footer() {
   return (
     <div className='footer'>
-      <h3 className='footer_h3'>holded \ <span>Careers</span></h3>
+      <h3 className='footer_h3'>KPI-job</h3>
       <div className='hr'></div>
-      <img src={footerLogo} alt="" />
+      <div className='footer_box'>
+        <a href="https://kpi.com" className='link'>
+        <h3>Hiring with</h3>
+        </a>
+
+        <a href="https://kpi.com">
+        <img className='footer_img' src={footerLogo} alt="" />
+        </a>
+      </div>
     </div>
   )
 }
