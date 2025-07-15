@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import "./Home.css";
 import homeImageFirst from '../../assets/CEbZrJcVt13J.webp';
 import homeImageSecond from '../../assets/MSuhC8ollm9F.webp';
-import { FaCheck } from "react-icons/fa6";
 import { useLang } from '../../LanguageContext.jsx'; 
 import { Link } from 'react-router-dom';
 import { BiSolidBuildingHouse } from "react-icons/bi";
 import { MdLocationPin } from "react-icons/md";
+import {
+  FaStar, FaHeart, FaFlag, FaUsers, FaPen, FaMagic, FaCheck
+} from "react-icons/fa";
+
 
 function Home() {
   const [results, setResults] = useState([]);
@@ -19,6 +22,14 @@ function Home() {
   const [locationData, setLocationData] = useState(null);
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState("");
+  const iconMap = {
+  star: <FaStar className="value_icon" />,
+  heart: <FaHeart className="value_icon" />,
+  flag: <FaFlag className="value_icon" />,
+  users: <FaUsers className="value_icon" />,
+  pen: <FaPen className="value_icon" />,
+  magic: <FaMagic className="value_icon" />
+};
 
   useEffect(() => {
     async function fetchData() {
@@ -134,6 +145,8 @@ function Home() {
 
     footer: { uz: `Ishga qabul qilingan / Karyera`, ru: 'Holded / Карьера', en: 'holded / Careers' }
   };
+  console.log(values);
+
   return (
     <div className='home'>
       <div className="banner_first">
@@ -195,21 +208,20 @@ function Home() {
         </div>
       </div>
 
-      <div id='culture' className="value">
-        <div className="container value_container">
-          <h1 className='value_h1'>{t.value[lang]}</h1>
-          <div className="value_box">
-            {values.map((item, i) => (
-              <div className="value_card" key={i}>
-                <div className='value_icon' />
-                <FaCheck/>
-                <h3>{item.title[lang]}</h3>
-                <p>{item.description[lang]}</p>
-              </div>
-            ))}
-          </div>
+       <div id='culture' className="value">
+      <div className="container value_container">
+        <h1 className='value_h1'>{t.value[lang]}</h1>
+        <div className="value_box">
+          {values.map((item, i) => (
+            <div className="value_card" key={i}>
+              {iconMap[item.icon?.toLowerCase()] || <FaCheck className="value_icon" />}
+              <h3>{item.title[lang]}</h3>
+              <p>{item.description[lang]}</p>
+            </div>
+          ))}
         </div>
       </div>
+    </div>
 
       <div className="learning second media">
         <div className="container learning_container media_box">
@@ -234,9 +246,8 @@ function Home() {
         </div>
         <div className="jobs-grid">
          {selectedJobs.map((job, index) => {
-            const slug = job.title.toLowerCase().replace(/\s+/g, '-');
             return (
-              <Link className='link' to={`/job/${slug}`} key={index}>
+              <Link className='link' to={`/job/${job.slug}`} key={index}>
                 <div className="job-card">
                   <h3 className="job-title">{job.title}</h3>
                   <div className="job-details">

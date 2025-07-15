@@ -1272,3 +1272,15 @@
 .div_hr{
     margin-bottom: 20px;
 }
+.value{
+    min-height: 100vh;
+}
+.value_box{
+    min-height:  80vh;
+}
+.value_card{
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    flex-direction: column;
+}

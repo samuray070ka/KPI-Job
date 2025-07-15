@@ -4,6 +4,7 @@ import AllDataViewer from './AllDataViewer';
 import translations from './i18n';
 
 function AdminPage() {
+  const iconOptions = ['star', 'heart', 'flag', 'users', 'pen', 'magic'];
   const [section, setSection] = useState('results');
   const [lang, setLang] = useState(localStorage.getItem('adminLang') || 'uz');
   const t = translations[lang] || translations.uz;
@@ -15,7 +16,7 @@ function AdminPage() {
 
   const [result, setResult] = useState({ number: '', label: { uz: '', ru: '', en: '' } });
   const [story, setStory] = useState({ description: { uz: '', ru: '', en: '' }, year: '' });
-  const [value, setValue] = useState({ title: { uz: '', ru: '', en: '' }, description: { uz: '', ru: '', en: '' } });
+  const [value, setValue] = useState({ title: { uz: '', ru: '', en: '' }, description: { uz: '', ru: '', en: '' }, icon: '' });
   const [job, setJob] = useState({ department: '', title: '', type: '', location: '' });
   const [perk, setPerk] = useState({ label: { uz: '', ru: '', en: '' } });
   const [work, setWork] = useState({ imageFile: null });
@@ -132,12 +133,36 @@ function AdminPage() {
                     );
                   }
 
+                  // 🔸 ICON uchun select
+                  if (section === 'values' && key === 'icon') {
+                    return (
+                      <tr key={key}>
+                        <td>{key}</td>
+                        <td>-</td>
+                        <td className="td">
+                          <select
+                            className="sa"
+                            value={value}
+                            onChange={(e) =>
+                              setCurrentData({ ...currentData, icon: e.target.value })
+                            }
+                          >
+                            <option value="">{t.choose || 'Tanlang'}</option>
+                            {iconOptions.map((icon) => (
+                              <option key={icon} value={icon}>{icon}</option>
+                            ))}
+                          </select>
+                        </td>
+                      </tr>
+                    );
+                  }
+
                   if (typeof value === 'object') {
                     return Object.entries(value).map(([langKey, val]) => (
                       <tr key={`${key}-${langKey}`}>
                         <td>{key}</td>
                         <td>{langKey.toUpperCase()}</td>
-                        <td className='td'>
+                        <td className="td">
                           <input
                             className="sa"
                             type="text"
@@ -161,7 +186,7 @@ function AdminPage() {
                     <tr key={key}>
                       <td>{key}</td>
                       <td>-</td>
-                      <td className='td'>
+                      <td className="td">
                         <input
                           className="sa"
                           type={key.toLowerCase().includes('number') ? 'number' : 'text'}
@@ -175,6 +200,7 @@ function AdminPage() {
                   );
                 })}
               </tbody>
+
             </table>
           </div>
           <button type="submit" className="btn_send">{t.submit}</button>

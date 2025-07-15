@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo } from "react";
 import "./Admin.css";
 
 function AllDataViewer({ lang = 'uz', t }) {
+  const iconOptions = ['star', 'heart', 'flag', 'users', 'pen', 'magic']; // 🔥 iconlar
+
   const sectionLabels = t.sections;
   const sections = useMemo(() => Object.keys(sectionLabels || {}), [sectionLabels]);
   const [allData, setAllData] = useState({});
@@ -61,25 +63,24 @@ function AllDataViewer({ lang = 'uz', t }) {
   };
 
   const handleDelete = async (itemId, section) => {
-  if (!window.confirm("O'chirishga ishonchingiz komilmi?")) return;
+    if (!window.confirm("O'chirishga ishonchingiz komilmi?")) return;
 
-  try {
-    const res = await fetch(`http://localhost:5000/home/${section}/${itemId}`, {
-      method: "DELETE",
-    });
-    const data = await res.json();
-    if (res.ok) {
-      alert("✅ O'chirildi");
-      const updatedData = allData[section].filter((d) => d._id !== itemId);
-      setAllData({ ...allData, [section]: updatedData });
-    } else {
-      alert(`❌ ${data.message || "Xatolik yuz berdi"}`);
+    try {
+      const res = await fetch(`http://localhost:5000/home/${section}/${itemId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ O'chirildi");
+        const updatedData = allData[section].filter((d) => d._id !== itemId);
+        setAllData({ ...allData, [section]: updatedData });
+      } else {
+        alert(`❌ ${data.message || "Xatolik yuz berdi"}`);
+      }
+    } catch (err) {
+      alert("❌ O'chirishda xatolik yuz berdi");
     }
-  } catch (err) {
-    alert("❌ O'chirishda xatolik yuz berdi");
-  }
-};
-
+  };
 
   if (loading) return <p>{t?.loading || "Yuklanmoqda..."}</p>;
 
@@ -125,7 +126,6 @@ function AllDataViewer({ lang = 'uz', t }) {
                       <button className="delete" onClick={() => handleDelete(item._id, sec)}>
                         {t?.delete || "Delete"}
                       </button>
-
                     </td>
                   </tr>
                 ))}
@@ -142,8 +142,33 @@ function AllDataViewer({ lang = 'uz', t }) {
             <table className="admin-table">
               <tbody>
                 {Object.entries(editingItem)
-                  .filter(([key]) => !['_id', '__v', 'createdAt', 'updatedAt', 'icon'].includes(key))
+                  .filter(([key]) => !['_id', '__v', 'createdAt', 'updatedAt'].includes(key))
                   .map(([key, val]) => {
+                    // 🔸 ICON bo‘lsa select sifatida ko‘rsatamiz
+                    if (key === 'icon') {
+                      return (
+                        <tr key={key}>
+                          <td>{key}</td>
+                          <td>-</td>
+                          <td>
+                            <select
+                              value={val || ''}
+                              onChange={(e) =>
+                                setEditingItem({ ...editingItem, icon: e.target.value })
+                              }
+                            >
+                              <option value="">Tanlang</option>
+                              {iconOptions.map((icon) => (
+                                <option key={icon} value={icon}>
+                                  {icon}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                        </tr>
+                      );
+                    }
+
                     if (typeof val === 'object' && val !== null) {
                       return Object.entries(val).map(([langKey, subVal]) => (
                         <tr key={`${key}-${langKey}`}>
@@ -166,6 +191,7 @@ function AllDataViewer({ lang = 'uz', t }) {
                         </tr>
                       ));
                     }
+
                     return (
                       <tr key={key}>
                         <td>{key}</td>
