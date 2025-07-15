@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { data, useParams } from 'react-router-dom';
 import { useLang } from '../../LanguageContext.jsx';
 import './Home.css';
 import { BiSolidBuildingHouse } from "react-icons/bi";
@@ -40,6 +40,8 @@ function UniquePage() {
   if (error || !job) {
     return <div className="container"><p>{error}</p></div>;
   }
+  console.log(job);
+  
 
   return (
     <>
