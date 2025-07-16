@@ -1414,6 +1414,9 @@
     .div{
         padding: 0 20px;
     }
+    .unique_select{
+        width: 30%;
+    }
 }
 @media screen and (max-width:1250px) {
     .job-detail-page{
@@ -1429,6 +1432,9 @@
     }
     .unique_file{
         width: 65%;
+    }
+    .number{
+        min-width: 65%;
     }
 }
 @media screen and (max-width:550px) {
@@ -1451,6 +1457,9 @@
     .unique_file{
         width: 100%;
     }
+    .number{
+        min-width: 100%;
+    }
 }
 @media screen and (max-width:430px) {
     .job-detail-page h1{
@@ -1465,4 +1474,48 @@
     .unique_container{
         padding: 0 10px;
     }
+}
+.unique_container form label strong{
+    color: crimson;
+}
+.number{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 45%;
+    height: 100px;
+}
+.phone-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+
+}
+
+.phone-prefix {
+  background-color: #f0f0f0;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-right: 1px solid #ccc;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.phone-input {
+  border: none;
+  padding: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.unique_select {
+  padding: 10px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  min-width: 52%;
+  outline: none;
 }
